@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- DEMO SAFETY: Prevent search engine indexing -->
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Aravalli Retreat — Ranakpur & Jawai, Rajasthan (Demo)</title>
+  <meta name="description" content="An intimate boutique heritage sanctuary between the ancient marble temples of Ranakpur and the granite wilderness of Jawai in Rajasthan. Showcase demo website." />
+
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- Sticky Luxury Navbar -->
+  <header class="editorial-navbar" role="banner">
+    <a href="#hero" class="nav-brand-box" aria-label="Aravalli Retreat Home">
+      <span class="nav-brand-title">Aravalli Retreat</span>
+      <span class="nav-brand-location">Ranakpur – Jawai · Rajasthan</span>
+    </a>
+
+    <nav aria-label="Primary Navigation">
+      <ul class="nav-links-menu">
+        <li><a href="#story" class="nav-item-link">The Story</a></li>
+        <li><a href="#suites" class="nav-item-link">Sanctuaries</a></li>
+        <li><a href="#experiences" class="nav-item-link">Experiences</a></li>
+        <li><a href="#gallery" class="nav-item-link">Atmosphere</a></li>
+        <li><a href="#location" class="nav-item-link">Arrival</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-actions-box">
+      <button class="btn-editorial btn-terracotta open-enquiry-modal-btn desktop-reserve-btn">Reserve (Demo)</button>
+      
+      <!-- Mobile Menu Toggle Button -->
+      <button id="mobile-nav-toggle" class="btn-editorial mobile-menu-icon-btn" aria-label="Open Mobile Menu" style="padding: 10px 14px; display: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="17" x2="21" y2="17"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-nav-drawer" class="mobile-nav-drawer" role="dialog" aria-hidden="true" aria-label="Mobile Navigation Menu">
+    <div class="mobile-drawer-header">
+      <div class="nav-brand-title" style="font-size: 1.3rem;">Aravalli Retreat</div>
+      <button id="mobile-drawer-close-btn" class="mobile-drawer-close" aria-label="Close Mobile Menu">&times;</button>
+    </div>
+    <ul class="mobile-drawer-links">
+      <li><a href="#story" class="mobile-drawer-link">The Story</a></li>
+      <li><a href="#suites" class="mobile-drawer-link">Sanctuaries</a></li>
+      <li><a href="#experiences" class="mobile-drawer-link">Experiences</a></li>
+      <li><a href="#gallery" class="mobile-drawer-link">Atmosphere</a></li>
+      <li><a href="#location" class="mobile-drawer-link">Arrival</a></li>
+      <li style="margin-top: 24px;">
+        <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" style="width: 100%;">Reserve (Demo)</button>
+      </li>
+    </ul>
+  </div>
+
+
+  <!-- Main Content Body -->
+  <main id="main-content">
+
+    <!-- 1. HERO SECTION (Real Photography with Smooth Parallax Zoom) -->
+    <section id="hero" class="hero-editorial-section" aria-label="Hero Introduction">
+      <div class="hero-parallax-media-container">
+        <img 
+          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2400&q=90" 
+          alt="Serene Rajasthani heritage palace courtyard at golden sunrise" 
+          class="hero-main-photo" 
+        />
+        <div class="hero-atmospheric-scrim"></div>
+      </div>
+
+      <div class="hero-editorial-content">
+        <span class="editorial-kicker light">Boutique Heritage Sanctuary · Demo Prototype</span>
+        <h1>Between carved marble <br /><span class="serif-italic">& granite wilderness</span></h1>
+        <p>
+          Positioned where the dense forest hills of Ranakpur meet the prehistoric granite landscape of Jawai, Aravalli Retreat offers an unhurried sanctuary honoring Marwar craftsmanship and wilderness stewardship.
+        </p>
+        <div class="hero-actions-row">
+          <button class="btn-editorial btn-white open-enquiry-modal-btn">Request an Enquiry (Demo)</button>
+        </div>
+
+        <div class="hero-meta-strip">
+          <div class="hero-meta-item">
+            <span class="meta-tag">Location</span>
+            <span class="meta-val">Pali District, Rajasthan</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="meta-tag">Sanctuaries</span>
+            <span class="meta-val">16 Private Suites & Tents</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="meta-tag">Setting</span>
+            <span class="meta-val">Aravalli Ridges & Jawai Rocks</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. THE STORY / PHILOSOPHY (Asymmetric Editorial Layout) -->
+    <section id="story" class="editorial-section" aria-label="The Retreat Story">
+      <div class="editorial-container">
+        <div class="story-layout-grid">
+          
+          <div class="story-imagery-frame">
+            <div class="story-primary-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1600&q=85" 
+                alt="Intricately carved Rajasthani sandstone archways and colonnades" 
+                class="story-primary-photo"
+                loading="lazy"
+              />
+            </div>
+            <div class="story-inset-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=85" 
+                alt="Carved white marble detail" 
+                class="story-inset-photo"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div class="story-text-column">
+            <span class="editorial-kicker">Heritage & Architecture</span>
+            <h2 class="section-main-heading">A dialogue of stone, silence, and shadow</h2>
+            <blockquote class="story-quote-callout">
+              "We conceived a place of unhurried contemplation—where the architectural serenity of Ranakpur’s temples rests beside the untamed boulder hills of Jawai."
+            </blockquote>
+            <p>
+              Constructed using hand-quarried Jodhpur yellow sandstone, Makrana white marble, and native Jawai granite, the retreat is designed as a low-slung, light-filtering sanctuary. Thick stone walls and handcrafted jaali screens temper the desert sun while framing unobstructed views of the Aravalli forest canopy.
+            </p>
+            <p>
+              Here, morning reveals mist drifting over stepwells, and twilight brings the quiet resonance of folk melodies across the courtyards under starry skies.
+            </p>
+
+            <div class="story-pillars-grid">
+              <div class="story-pillar-item">
+                <h4>Traditional Craft</h4>
+                <p>Lime-plaster finishes, hand-chiseled stone jharokhas, and Marwar woodwork shaped by local artisans.</p>
+              </div>
+              <div class="story-pillar-item">
+                <h4>Wild Stewardship</h4>
+                <p>Deep harmony with the pastoral Rabari community and responsible safaris respecting the local leopard ecology.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ACCOMMODATIONS / SANCTUARIES (Magazine Spreads) -->
+    <section id="suites" class="editorial-section bg-secondary" aria-label="Sanctuaries and Suites">
+      <div class="editorial-container">
+        
+        <div class="section-header-block">
+          <span class="editorial-kicker">Private Living</span>
+          <h2 class="section-main-heading">Sanctuaries of quiet restraint</h2>
+          <p class="section-lead-paragraph">
+            Each suite is designed as an intimate private haven, blending understated luxury, bespoke furnishings, and sweeping views of the surrounding ridges.
+          </p>
+        </div>
+
+        <div class="suites-magazine-stack">
+          <!-- Suite 1 -->
+          <article class="suite-magazine-card">
+            <div class="suite-media-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1600&q=85" 
+                alt="Aravalli Marble Suite bedroom with natural linen and forest vista" 
+                class="suite-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <div class="suite-content-wrap">
+              <span class="editorial-kicker">Suite 01 · Forest Wing</span>
+              <h3 class="suite-heading-name">Aravalli Marble Suite</h3>
+              <p class="suite-description-text">
+                Pristine Makrana marble floors, a private sunlit jharokha balcony overlooking the forest ridge, deep copper soaking bath, and a bespoke four-poster Sheesham bed dressed in handwoven organic linen.
+              </p>
+              <div class="suite-features-table">
+                <div class="feature-col">
+                  <span class="feat-label">Area</span>
+                  <span class="feat-val">1,150 sq ft</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">View</span>
+                  <span class="feat-val">Forest Ridge</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">Feature</span>
+                  <span class="feat-val">Plunge Pool</span>
+                </div>
+              </div>
+              <div class="suite-card-action-bar">
+                <div class="suite-price-display">
+                  ₹38,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
+                </div>
+                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Aravalli Marble Suite">Enquire</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suite 2 -->
+          <article class="suite-magazine-card reversed">
+            <div class="suite-media-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?auto=format&fit=crop&w=1600&q=85" 
+                alt="Jawai Leopard Pavilion with terrace facing granite boulders" 
+                class="suite-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <div class="suite-content-wrap">
+              <span class="editorial-kicker">Suite 02 · Granite Ridge</span>
+              <h3 class="suite-heading-name">Jawai Leopard Pavilion</h3>
+              <p class="suite-description-text">
+                Set directly alongside ancient granite monoliths with a wide private stargazing terrace, brass telescope, outdoor rain shower, and leather-accented lounge overlooking the wilderness corridor.
+              </p>
+              <div class="suite-features-table">
+                <div class="feature-col">
+                  <span class="feat-label">Area</span>
+                  <span class="feat-val">1,400 sq ft</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">View</span>
+                  <span class="feat-val">Granite Hills</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">Feature</span>
+                  <span class="feat-val">Star Terrace</span>
+                </div>
+              </div>
+              <div class="suite-card-action-bar">
+                <div class="suite-price-display">
+                  ₹46,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
+                </div>
+                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Jawai Leopard Pavilion">Enquire</button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suite 3 -->
+          <article class="suite-magazine-card">
+            <div class="suite-media-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=1600&q=85" 
+                alt="Rabari Royal Villa and private heated plunge pool courtyard" 
+                class="suite-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <div class="suite-content-wrap">
+              <span class="editorial-kicker">Suite 03 · Private Courtyard</span>
+              <h3 class="suite-heading-name">Rabari Royal Villa & Tent</h3>
+              <p class="suite-description-text">
+                A custom canvas and sandstone villa celebrating pastoral crafts, featuring hand-embroidered textiles, private stone courtyard, heated plunge pool, and open fire pit for starry evenings.
+              </p>
+              <div class="suite-features-table">
+                <div class="feature-col">
+                  <span class="feat-label">Area</span>
+                  <span class="feat-val">1,750 sq ft</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">View</span>
+                  <span class="feat-val">Private Valley</span>
+                </div>
+                <div class="feature-col">
+                  <span class="feat-label">Feature</span>
+                  <span class="feat-val">Heated Pool</span>
+                </div>
+              </div>
+              <div class="suite-card-action-bar">
+                <div class="suite-price-display">
+                  ₹54,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
+                </div>
+                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Rabari Royal Villa & Tent">Enquire</button>
+              </div>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. FULL-BLEED CINEMATIC PARALLAX BREAK (Visual Interlude) -->
+    <section class="cinematic-interlude-section" aria-label="Visual Interlude">
+      <div class="cinematic-bg-photo-wrap">
+        <img 
+          src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=2400&q=90" 
+          alt="Atmospheric sunset over Aravalli hills and Jawai rocks" 
+          class="cinematic-bg-photo"
+        />
+      </div>
+      <div class="cinematic-interlude-scrim"></div>
+      <div class="cinematic-interlude-content">
+        <span class="editorial-kicker light">Wilderness Landscape</span>
+        <h2>"Where prehistoric rock formations meet the desert twilight."</h2>
+      </div>
+    </section>
+
+    <!-- 5. CURATED EXPERIENCES (Dark Forest Luxury Section) -->
+    <section id="experiences" class="editorial-section bg-dark" aria-label="Curated Experiences">
+      <div class="editorial-container">
+        
+        <div class="section-header-block">
+          <span class="editorial-kicker light">Immersion & Exploration</span>
+          <h2 class="section-main-heading">The living tapestry of Southern Rajasthan</h2>
+          <p class="section-lead-paragraph">
+            Thoughtfully curated private journeys designed to connect guests intimately with ancient architecture, wildlife, and pastoral traditions.
+          </p>
+        </div>
+
+        <div class="experiences-magazine-grid">
+          <!-- Experience 1 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1456926631375-92c8ce872def?auto=format&fit=crop&w=1000&q=85" 
+                alt="Wild leopard resting naturally on granite boulder in Jawai" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Wilderness</span>
+            <h3 class="experience-card-title">Jawai Leopard Expeditions</h3>
+            <p class="experience-card-body">
+              Custom open-top 4x4 safaris across ancient pre-Cambrian rock hills led by naturalists who have tracked these granite caves for decades.
+            </p>
+            <p class="experience-disclaimer">
+              *Note: Leopard and wildlife sightings are subject to natural movements in the wild and cannot be guaranteed.
+            </p>
+          </div>
+
+          <!-- Experience 2 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1000&q=85" 
+                alt="Carved white marble pillars of Ranakpur temple" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Heritage</span>
+            <h3 class="experience-card-title">Ranakpur Temple at Dawn</h3>
+            <p class="experience-card-body">
+              A private early-morning walk through the 15th-century temple complex before public hours, observing how light illuminates 1,444 uniquely carved marble pillars.
+            </p>
+          </div>
+
+          <!-- Experience 3 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?auto=format&fit=crop&w=1000&q=85" 
+                alt="Rabari pastoral elder in red turban walking at twilight" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Culture</span>
+            <h3 class="experience-card-title">Rabari Pastoral Culture Walk</h3>
+            <p class="experience-card-body">
+              Walk alongside nomadic Rabari elders through ancestral grazing paths, gaining insight into their peaceful coexistence with the wild leopards of Jawai.
+            </p>
+          </div>
+
+          <!-- Experience 4 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=85" 
+                alt="Jawai Dam lake waters at sunrise with birdlife" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Ecology</span>
+            <h3 class="experience-card-title">Jawai Dam Sunset & Birdlife</h3>
+            <p class="experience-card-body">
+              Afternoon tea by the expansive waters of Jawai Dam, watching flamingos, sarus cranes, and migratory birds along the granite shoreline.
+            </p>
+          </div>
+
+          <!-- Experience 5 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=85" 
+                alt="Candlelit private stepwell dining under starry skies" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Culinary</span>
+            <h3 class="experience-card-title">Stepwell Dining Under Starlight</h3>
+            <p class="experience-card-body">
+              Candlelit Rajasthani thali dining served on the stepwell terrace with ancestral Mewari recipes, accompanied by soulful Manganiyar instrumentalists.
+            </p>
+          </div>
+
+          <!-- Experience 6 -->
+          <div class="experience-card-item">
+            <div class="experience-photo-wrap">
+              <img 
+                src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&w=1000&q=85" 
+                alt="Kumbhalgarh fort high fortress wall vista" 
+                class="experience-card-photo"
+                loading="lazy"
+              />
+            </div>
+            <span class="editorial-kicker light">Excursion</span>
+            <h3 class="experience-card-title">Kumbhalgarh Fortress Ridge</h3>
+            <p class="experience-card-body">
+              A scenic mountain drive to the UNESCO World Heritage fortress, standing atop the second-longest continuous fortification wall in the world.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 6. ATMOSPHERE GALLERY (Editorial Masonry Grid) -->
+    <section id="gallery" class="editorial-section" aria-label="Visual Gallery">
+      <div class="editorial-container">
+        
+        <div class="section-header-block">
+          <span class="editorial-kicker">Atmosphere</span>
+          <h2 class="section-main-heading">Visual poetry of the retreat</h2>
+          <p class="section-lead-paragraph">
+            Moments of light, shade, and architecture captured across changing hours. Click any photograph to view in full resolution.
+          </p>
+        </div>
+
+        <div class="gallery-editorial-grid">
+          <div class="gallery-tile-item span-7" data-caption="Sandstone courtyard colonnade at golden sunrise">
+            <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1600&q=85" alt="Sandstone courtyard colonnade at golden sunrise" class="gallery-tile-photo" loading="lazy" />
+            <div class="gallery-tile-caption">Courtyard Colonnade · Sunrise</div>
+          </div>
+          <div class="gallery-tile-item span-5" data-caption="Carved white marble details and shadowplay">
+            <img src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=85" alt="Carved white marble details and shadowplay" class="gallery-tile-photo" loading="lazy" />
+            <div class="gallery-tile-caption">Marble Carvings · Makrana Stone</div>
+          </div>
+          <div class="gallery-tile-item span-4" data-caption="Minimalist luxury suite interior with natural linen">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85" alt="Minimalist luxury suite interior with natural linen" class="gallery-tile-photo" loading="lazy" />
+            <div class="gallery-tile-caption">Suite Interior · Sheesham Wood</div>
+          </div>
+          <div class="gallery-tile-item span-8" data-caption="Twilight candlelit reflection over the stepwell">
+            <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85" alt="Twilight candlelit reflection over the stepwell" class="gallery-tile-photo" loading="lazy" />
+            <div class="gallery-tile-caption">Stepwell Courtyard · Twilight Reflection</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. LOCATION & ARRIVAL -->
+    <section id="location" class="editorial-section bg-secondary" aria-label="Location and Accessibility">
+      <div class="editorial-container">
+        <div class="location-editorial-layout">
+          
+          <div class="location-details-col">
+            <span class="editorial-kicker">Arrival & Setting</span>
+            <h2 class="section-main-heading">Between ancient hills and sacred valleys</h2>
+            <p>
+              Aravalli Retreat lies secluded in the Pali district of Southern Rajasthan, positioned between the forested gorges of Ranakpur and the prehistoric granite terrain of Jawai.
+            </p>
+
+            <table class="distance-specs-table">
+              <tbody>
+                <tr>
+                  <td class="dest-name">Ranakpur Jain Temples</td>
+                  <td class="dest-km">~18 km</td>
+                  <td class="dest-time">25 mins (Sample)</td>
+                </tr>
+                <tr>
+                  <td class="dest-name">Jawai Leopard Hills</td>
+                  <td class="dest-km">~24 km</td>
+                  <td class="dest-time">35 mins (Sample)</td>
+                </tr>
+                <tr>
+                  <td class="dest-name">Udaipur Airport (UDR)</td>
+                  <td class="dest-km">~110 km</td>
+                  <td class="dest-time">2.5 hours (Sample)</td>
+                </tr>
+                <tr>
+                  <td class="dest-name">Jodhpur Airport (JDH)</td>
+                  <td class="dest-km">~145 km</td>
+                  <td class="dest-time">3 hours (Sample)</td>
+                </tr>
+                <tr>
+                  <td class="dest-name">Falna / Jawai Bandh Railway</td>
+                  <td class="dest-km">~28 km</td>
+                  <td class="dest-time">40 mins (Sample)</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top: 24px; font-size: 0.88rem; color: var(--color-text-dim);">
+              *Chauffeur-driven private transfers from Udaipur or Jodhpur airports can be pre-arranged prior to arrival.
+            </p>
+          </div>
+
+          <div class="location-photo-frame">
+            <img 
+              src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=1200&q=85" 
+              alt="Scenic landscape of the Aravalli foothills in Southern Rajasthan" 
+              class="location-map-photo" 
+              loading="lazy" 
+            />
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. SAMPLE GUEST REFLECTIONS (Labelled Sample) -->
+    <section id="testimonials" class="editorial-section" aria-label="Sample Guest Reflections">
+      <div class="editorial-container">
+        
+        <div class="section-header-block centered">
+          <span class="editorial-kicker">Reflections</span>
+          <h2 class="section-main-heading">Sample Guest Notes</h2>
+          <p class="section-lead-paragraph">
+            Fictional impressions illustrating the unhurried pace of life at the retreat.
+          </p>
+        </div>
+
+        <div class="testimonials-editorial-grid">
+          <div class="testimonial-quote-box">
+            <span class="sample-notice-pill">Sample Guest Note · Demo Only</span>
+            <p class="testimonial-body-quote">
+              "The silence here is profound. Watching the golden morning light shift across the sandstone pillars while peacocks crossed the courtyard made time stand still."
+            </p>
+            <div class="guest-name-credit">Vikram & Sunaina M.</div>
+            <div class="guest-location-credit">Sample Note · New Delhi</div>
+          </div>
+
+          <div class="testimonial-quote-box">
+            <span class="sample-notice-pill">Sample Guest Note · Demo Only</span>
+            <p class="testimonial-body-quote">
+              "The early safari tracking leopards in the granite caves, followed by quiet chai at sunrise overlooking Jawai Dam, was an experience of raw beauty."
+            </p>
+            <div class="guest-name-credit">Julian & Clara H.</div>
+            <div class="guest-location-credit">Sample Note · Zurich</div>
+          </div>
+
+          <div class="testimonial-quote-box">
+            <span class="sample-notice-pill">Sample Guest Note · Demo Only</span>
+            <p class="testimonial-body-quote">
+              "An extraordinary architectural achievement that honors Rajasthani craft with restraint. The food, the warmth of the team, and the stepwell dining were unforgettable."
+            </p>
+            <div class="guest-name-credit">Aditya S.</div>
+            <div class="guest-location-credit">Sample Note · Mumbai</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 9. MINIMAL LUXURY FOOTER -->
+  <footer class="editorial-site-footer" role="contentinfo">
+    <div class="editorial-container">
+      
+      <div class="footer-columns-grid">
+        <div class="footer-brand-col">
+          <div class="footer-brand-title">Aravalli Retreat</div>
+          <p class="footer-brand-bio">
+            A fictional boutique heritage sanctuary between Ranakpur and Jawai in Southern Rajasthan, India.
+          </p>
+          <div class="demo-badge-indicator" style="margin-top: 20px;">
+            Demo Website Prototype
+          </div>
+        </div>
+
+        <div class="footer-nav-col">
+          <div class="footer-col-header">Navigation</div>
+          <ul class="footer-links-group">
+            <li><a href="#story">The Story</a></li>
+            <li><a href="#suites">Sanctuaries & Suites</a></li>
+            <li><a href="#experiences">Curated Experiences</a></li>
+            <li><a href="#gallery">Atmosphere</a></li>
+            <li><a href="#location">Arrival & Map</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-contact-col">
+          <div class="footer-col-header">Placeholder Contacts</div>
+          <ul class="footer-links-group">
+            <li><strong>Reservations:</strong> +91 00000 00000</li>
+            <li><strong>Enquiries:</strong> enquiries@aravalliretreat.example.com</li>
+            <li><strong>Location:</strong> Pali District, Ranakpur–Jawai Corridor, Rajasthan</li>
+          </ul>
+        </div>
+
+        <div class="footer-notice-col">
+          <div class="footer-col-header">Prototype Notice</div>
+          <p style="font-size: 0.82rem; color: var(--color-text-light-muted); line-height: 1.65;">
+            This website is a design showcase demo. All names, rates, testimonials, and availability are simulated placeholders. No financial transactions or live reservations are processed.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom-strip">
+        <div>&copy; 2026 Aravalli Retreat (Fictional Showcase Demo). All rights reserved.</div>
+        <div>Calm Editorial Heritage Design</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Lightbox Dialog -->
+  <div id="gallery-lightbox" class="gallery-lightbox-modal" role="dialog" aria-hidden="true" aria-label="Image Lightbox">
+    <div class="lightbox-dialog-frame">
+      <button id="lightbox-close" class="lightbox-close-trigger" aria-label="Close Lightbox">&times;</button>
+      <img id="lightbox-img" class="lightbox-dialog-photo" src="" alt="Enlarged view" />
+      <div id="lightbox-caption" class="lightbox-dialog-caption"></div>
+    </div>
+  </div>
+
+  <!-- Booking / Enquiry Modal -->
+  <div id="enquiry-modal" class="enquiry-modal-backdrop" role="dialog" aria-hidden="true" aria-label="Reservation Enquiry">
+    <div class="enquiry-modal-card">
+      <button id="modal-close" class="modal-close-button" aria-label="Close Dialog">&times;</button>
+
+      <div class="demo-safety-banner">
+        <strong>Demo Notice:</strong> This is an interactive showcase prototype. No real bookings or payments occur. Submitting will display a simulated confirmation.
+      </div>
+
+      <div id="enquiry-form-view">
+        <span class="editorial-kicker">Reservation Enquiry</span>
+        <h3 style="font-size: 1.95rem; margin-top: 6px; margin-bottom: 24px;">Request a Stay at Aravalli Retreat</h3>
+
+        <form id="enquiry-form" novalidate>
+          <div class="form-field-unit">
+            <label for="guest-name">Full Name *</label>
+            <input type="text" id="guest-name" class="editorial-field-input" placeholder="e.g. Gayatri Devi" required />
+          </div>
+
+          <div class="form-field-unit">
+            <label for="guest-email">Email Address *</label>
+            <input type="email" id="guest-email" class="editorial-field-input" placeholder="e.g. guest@example.com" required />
+          </div>
+
+          <div class="form-split-columns">
+            <div class="form-field-unit">
+              <label for="checkin-date">Check-in Date *</label>
+              <input type="date" id="checkin-date" class="editorial-field-input" required />
+            </div>
+            <div class="form-field-unit">
+              <label for="checkout-date">Check-out Date *</label>
+              <input type="date" id="checkout-date" class="editorial-field-input" required />
+            </div>
+          </div>
+
+          <div class="form-split-columns">
+            <div class="form-field-unit">
+              <label for="suite-select">Preferred Sanctuary</label>
+              <select id="suite-select" class="editorial-field-select">
+                <option value="Aravalli Marble Suite">Aravalli Marble Suite</option>
+                <option value="Jawai Leopard Pavilion">Jawai Leopard Pavilion</option>
+                <option value="Rabari Royal Villa & Tent">Rabari Royal Villa & Tent</option>
+              </select>
+            </div>
+            <div class="form-field-unit">
+              <label for="guest-count">Guests</label>
+              <select id="guest-count" class="editorial-field-select">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4+">4+ Guests</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-field-unit">
+            <label for="special-notes">Special Requests & Safari Interests</label>
+            <textarea id="special-notes" class="editorial-field-textarea" rows="3" placeholder="Please let us know your preferences for leopard safaris, temple dawn visits, or dietary needs..."></textarea>
+          </div>
+
+          <button type="submit" class="btn-editorial btn-terracotta" style="width: 100%; margin-top: 10px;">
+            Submit Demo Enquiry
+          </button>
+        </form>
+      </div>
+
+      <!-- Demo Confirmation Screen -->
+      <div id="enquiry-confirmation-view" class="demo-success-confirmation">
+        <span class="editorial-kicker">Demo Simulation</span>
+        <h3 style="font-size: 1.85rem; margin: 12px 0 16px; color: var(--color-text-main);">Enquiry Received</h3>
+        <p style="margin-bottom: 24px; font-size: 0.95rem;">
+          Thank you for exploring the Aravalli Retreat prototype. Your demo enquiry has been registered in the demonstration log.
+        </p>
+        <div style="background: var(--bg-secondary); padding: 16px; margin-bottom: 28px; font-size: 0.88rem; color: var(--color-text-main); border: 1px solid var(--color-border);">
+          <strong>Demo Reference Number:</strong> #ARV-DEMO-<span id="demo-ref-number">8492</span>
+        </div>
+        <button id="confirmation-return-btn" class="btn-editorial" style="width: 100%;">
+          Return to Retreat
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
