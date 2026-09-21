@@ -3,487 +3,342 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
   <!-- DEMO SAFETY: Prevent search engine indexing -->
   <meta name="robots" content="noindex, nofollow" />
   <title>Aravalli Retreat — Ranakpur &amp; Jawai, Rajasthan (Sample Demo)</title>
-  <meta name="description" content="A calm, boutique wilderness retreat between Ranakpur and the granite hills of Jawai in Rajasthan." />
+  <meta name="description" content="A calm luxury wilderness lodge between Ranakpur and Jawai in Rajasthan. Sample demonstration." />
 
   <!-- Preload Hero Image -->
   <link rel="preload" as="image" href="/images/hero.jpg" />
 
-  <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Sans) -->
+  <!-- Google Fonts: Cormorant Garamond & DM Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
 
-  <!-- Editorial Navigation Bar -->
+  <!-- 0. MINIMAL EDITORIAL LOADER (Fades & lifts under 2s) -->
+  <div id="app-loader" class="editorial-loader" aria-hidden="true">
+    <div class="loader-content">
+      <span class="loader-kicker">Rajasthan &middot; Sample Demo</span>
+      <h2 class="loader-title">Aravalli Retreat</h2>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR (Transparent over hero, solid cream on scroll) -->
   <header class="editorial-navbar" role="banner">
-    <div class="nav-inner-container">
-      <a href="#hero" class="nav-brand-box" aria-label="Aravalli Retreat Home">
-        <span class="nav-brand-title">Aravalli Retreat</span>
-        <span class="nav-brand-location">Ranakpur &middot; Jawai &middot; Rajasthan</span>
+    <div class="nav-container">
+      <a href="#hero" class="nav-brand" aria-label="Aravalli Retreat Home">
+        <span class="nav-brand-name">Aravalli Retreat</span>
+        <span class="nav-brand-sub">Ranakpur &middot; Jawai</span>
       </a>
 
-      <nav class="nav-primary-menu" aria-label="Primary Navigation">
-        <ul class="nav-links-menu">
-          <li><a href="#story" class="nav-item-link">The Stay</a></li>
-          <li><a href="#suites" class="nav-item-link">Suites</a></li>
-          <li><a href="#timeline" class="nav-item-link">A Day Here</a></li>
-          <li><a href="#dining" class="nav-item-link">Dining</a></li>
-          <li><a href="#experiences" class="nav-item-link">Experiences</a></li>
-          <li><a href="#gallery" class="nav-item-link">Gallery</a></li>
-          <li><a href="#location" class="nav-item-link">Location</a></li>
+      <nav class="nav-links-desktop" aria-label="Primary Navigation">
+        <ul class="nav-list">
+          <li><a href="#stay" class="nav-link">Stay</a></li>
+          <li><a href="#dining" class="nav-link">Dining</a></li>
+          <li><a href="#experiences" class="nav-link">Experiences</a></li>
+          <li><a href="#gallery" class="nav-link">Gallery</a></li>
+          <li><a href="#location" class="nav-link">Location</a></li>
         </ul>
       </nav>
 
-      <div class="nav-actions-box">
-        <button class="btn-editorial btn-terracotta open-enquiry-modal-btn desktop-reserve-btn">Enquire (Demo)</button>
+      <div class="nav-actions">
+        <a href="#enquire" class="btn-editorial btn-terracotta nav-enquire-btn">Enquire</a>
         
-        <!-- Mobile Menu Toggle Button -->
-        <button id="mobile-nav-toggle" class="mobile-menu-toggle-btn" aria-label="Open Mobile Menu">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <line x1="3" y1="7" x2="21" y2="7"></line>
-            <line x1="3" y1="17" x2="21" y2="17"></line>
-          </svg>
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-toggle" class="mobile-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span class="toggle-bar"></span>
+          <span class="toggle-bar"></span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Mobile Backdrop Overlay -->
-  <div id="mobile-nav-backdrop" class="mobile-nav-backdrop" aria-hidden="true"></div>
-
-  <!-- Mobile Drawer Menu -->
-  <div id="mobile-nav-drawer" class="mobile-nav-drawer" role="dialog" aria-hidden="true" aria-label="Mobile Navigation Menu">
-    <div class="mobile-drawer-header">
-      <div class="nav-brand-title">Aravalli Retreat</div>
-      <button id="mobile-drawer-close-btn" class="mobile-drawer-close" aria-label="Close Mobile Menu">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+  <!-- MOBILE MENU DRAWER -->
+  <div id="mobile-menu-drawer" class="mobile-drawer" role="dialog" aria-hidden="true" aria-label="Mobile Navigation">
+    <div class="mobile-drawer-inner">
+      <div class="mobile-drawer-header">
+        <span class="nav-brand-name">Aravalli Retreat</span>
+        <button id="mobile-menu-close" class="mobile-close-btn" aria-label="Close menu">&times;</button>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="#stay" class="mobile-nav-link">Stay</a></li>
+        <li><a href="#dining" class="mobile-nav-link">Dining</a></li>
+        <li><a href="#experiences" class="mobile-nav-link">Experiences</a></li>
+        <li><a href="#gallery" class="mobile-nav-link">Gallery</a></li>
+        <li><a href="#location" class="mobile-nav-link">Location</a></li>
+        <li class="mobile-cta-li">
+          <a href="#enquire" class="btn-editorial btn-terracotta mobile-enquire-btn">Enquire</a>
+        </li>
+      </ul>
+      <div class="mobile-drawer-footer">
+        <p class="mobile-contact-line">Sample reservations &middot; +91 00000 00000</p>
+      </div>
     </div>
-    <ul class="mobile-drawer-links">
-      <li><a href="#story" class="mobile-drawer-link">The Stay</a></li>
-      <li><a href="#suites" class="mobile-drawer-link">Suites</a></li>
-      <li><a href="#timeline" class="mobile-drawer-link">A Day Here</a></li>
-      <li><a href="#dining" class="mobile-drawer-link">Dining</a></li>
-      <li><a href="#experiences" class="mobile-drawer-link">Experiences</a></li>
-      <li><a href="#gallery" class="mobile-drawer-link">Gallery</a></li>
-      <li><a href="#location" class="mobile-drawer-link">Location</a></li>
-      <li style="margin-top: 24px;">
-        <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" style="width: 100%;">Enquire (Demo)</button>
-      </li>
-    </ul>
   </div>
+  <div id="mobile-menu-backdrop" class="mobile-backdrop" aria-hidden="true"></div>
 
-  <!-- Main Content -->
+  <!-- MAIN EDITORIAL CONTENT -->
   <main id="main-content">
 
-    <!-- 1. HERO SECTION (Wide landscape at golden hour + Subtle dust motes + Booking Bar) -->
-    <section id="hero" class="hero-editorial-section" aria-label="Aravalli Retreat Introduction">
-      
+    <!-- 1. HERO SECTION -->
+    <section id="hero" class="hero-section" aria-label="Aravalli Retreat Overview">
       <div class="hero-media-wrapper">
         <img 
           src="/images/hero.jpg" 
-          alt="Golden hour landscape across granite hills and safari camp in Rajasthan (Sample image)" 
-          class="hero-base-photo"
+          alt="Granite hills and wilderness landscape in Rajasthan at golden hour (Sample image)" 
+          class="hero-photo"
           width="2400"
           height="1400"
         />
-        <!-- Subtle Three.js ambient dust motes layer -->
-        <div id="hero-webgl-container" class="hero-webgl-overlay" aria-hidden="true"></div>
-        <div class="hero-contrast-overlay"></div>
+        <!-- Subtle Three.js dust particles layer -->
+        <div id="hero-webgl-container" class="hero-webgl-layer" aria-hidden="true"></div>
+        <div class="hero-dark-overlay" aria-hidden="true"></div>
       </div>
 
-      <div class="hero-content-container">
-        <div class="hero-editorial-copy">
-          <span class="editorial-kicker light">Wilderness Lodge &middot; Southern Rajasthan</span>
-          <h1>Leopards on the granite hills. Temples in the forest. A quiet stay between them.</h1>
-          <p class="hero-lead-text">
-            16 private suites and pavilions set among ancient boulder hills and forest valleys.
-          </p>
-        </div>
-
-        <!-- Horizontal Booking Bar -->
-        <div class="hero-booking-bar-wrapper">
-          <form id="hero-booking-form" class="hero-booking-bar" novalidate>
-            <div class="booking-field">
-              <label for="hero-checkin">Check-in</label>
-              <input type="date" id="hero-checkin" class="booking-date-input" required />
-            </div>
-
-            <div class="booking-divider"></div>
-
-            <div class="booking-field">
-              <label for="hero-checkout">Check-out</label>
-              <input type="date" id="hero-checkout" class="booking-date-input" required />
-            </div>
-
-            <div class="booking-divider"></div>
-
-            <div class="booking-field">
-              <label for="hero-guests">Guests</label>
-              <select id="hero-guests" class="booking-select-input">
-                <option value="1">1 Guest</option>
-                <option value="2" selected>2 Guests</option>
-                <option value="3">3 Guests</option>
-                <option value="4+">4+ Guests</option>
-              </select>
-            </div>
-
-            <div class="booking-divider"></div>
-
-            <div class="booking-field">
-              <label for="hero-suite">Suite Preference</label>
-              <select id="hero-suite" class="booking-select-input">
-                <option value="Aravalli Forest Suite">Aravalli Forest Suite</option>
-                <option value="Jawai Granite Pavilion">Jawai Granite Pavilion</option>
-                <option value="Rabari Courtyard Villa">Rabari Courtyard Villa</option>
-              </select>
-            </div>
-
-            <div class="booking-action-wrap">
-              <button type="submit" class="btn-editorial btn-terracotta btn-booking-submit">
-                Enquire (Demo)
-              </button>
-            </div>
-          </form>
-          <div id="hero-booking-error" class="booking-error-text" role="alert"></div>
-        </div>
-
+      <div class="hero-text-container">
+        <span class="kicker kicker-light hero-kicker">Wilderness Lodge &middot; Southern Rajasthan</span>
+        <h1 class="hero-heading">Leopards on the granite hills. Temples in the forest. A quiet stay between them.</h1>
+        <p class="hero-subtext">A calm wilderness lodge set among ancient granite boulders and quiet forests (Sample demo).</p>
       </div>
 
-      <a href="#story" class="hero-scroll-link" aria-label="Scroll to learn more">
-        <span class="scroll-link-text">Explore the retreat</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <a href="#intro" class="hero-scroll-hint" aria-label="Scroll to introduction">
+        <span class="scroll-text">Explore</span>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M12 5v14M19 12l-7 7-7-7"/>
         </svg>
       </a>
     </section>
 
-    <!-- 2. THE STAY / STORY (Guest-experience led) -->
-    <section id="story" class="editorial-section" aria-label="The Retreat Experience">
-      <div class="editorial-container">
-        
-        <div class="story-grid-layout">
-          <div class="story-visual-column">
-            <div class="story-photo-frame">
-              <img 
-                src="/images/story.jpg" 
-                alt="Retreat terrace and garden looking out to morning hills (Sample image)" 
-                class="story-photo"
-                loading="lazy"
-                width="1600"
-                height="1066"
-              />
-              <span class="image-caption-tag">Morning light over the courtyard terrace (Sample image)</span>
-            </div>
-          </div>
-
-          <div class="story-text-column">
-            <span class="editorial-kicker">The Experience</span>
-            <h2 class="section-main-heading">Days shaped by the wild and the hills.</h2>
-            
-            <p class="story-body-text">
-              Mornings begin early with chai before setting out across granite hills in an open 4x4 to track leopards. By midday, guests return for slow lunches under neem trees or read on private balconies overlooking the forest canopy.
-            </p>
-            <p class="story-body-text">
-              Evenings bring tea by the reservoir as flamingos gather at sunset, followed by wood-fired dinners beside the candlelit stepwell. The buildings are constructed from local yellow sandstone and native granite.
-            </p>
-
-            <div class="story-amenity-tags">
-              <span class="amenity-tag">Stepwell Pool</span>
-              <span class="amenity-tag">Guided Safaris</span>
-              <span class="amenity-tag">Farm-to-Table Meals</span>
-              <span class="amenity-tag">High-speed Wi-Fi</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- DARK SECTION 1: FULL-BLEED WILDERNESS INTERLUDE -->
-    <section class="editorial-section dark-break-section" aria-label="Wilderness Interlude">
-      <div class="dark-break-media">
-        <img 
-          src="/images/wilderness-dusk.jpg" 
-          alt="Wild leopard resting on granite hill at twilight (Sample image)" 
-          class="dark-break-bg-photo"
-          loading="lazy"
-          width="2000"
-          height="1200"
-        />
-        <div class="dark-break-scrim"></div>
-      </div>
-      <div class="editorial-container">
-        <div class="dark-break-content">
-          <span class="editorial-kicker light">Granite Country</span>
-          <h2 class="dark-break-quote">"Where granite boulders hold the heat of the afternoon sun, and leopards walk ancient grazing paths at dusk."</h2>
-          <p class="dark-break-subtext">
-            Naturalist-led drives across the private conservancy &middot; Morning and late afternoon
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. A DAY AT THE RETREAT (Timeline with Photos) -->
-    <section id="timeline" class="editorial-section bg-secondary" aria-label="A Day at the Retreat">
-      <div class="editorial-container">
-        
-        <div class="section-header-block">
-          <span class="editorial-kicker">Daily Rhythm</span>
-          <h2 class="section-main-heading">A day at the retreat.</h2>
-          <p class="section-lead-paragraph">
-            From the first tracker call at dawn to quiet starlight over the courtyard.
-          </p>
-        </div>
-
-        <div class="timeline-magazine-list">
-          
-          <div class="timeline-entry">
-            <div class="timeline-time">05:30</div>
-            <div class="timeline-card">
-              <div class="timeline-img-wrap">
-                <img src="/images/timeline-dawn.jpg" alt="Open 4x4 safari jeep in granite hills at dawn (Sample image)" class="timeline-img" loading="lazy" width="1000" height="667" />
-              </div>
-              <div class="timeline-body">
-                <h3>Dawn Leopard Tracking</h3>
-                <p>Hot chai and ginger biscuits before heading out into the granite hills in an open 4x4 with our local trackers.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-entry">
-            <div class="timeline-time">08:30</div>
-            <div class="timeline-card">
-              <div class="timeline-img-wrap">
-                <img src="/images/timeline-breakfast.jpg" alt="Breakfast table with fresh fruit and pastries overlooking hills (Sample image)" class="timeline-img" loading="lazy" width="1000" height="667" />
-              </div>
-              <div class="timeline-body">
-                <h3>Terrace Breakfast</h3>
-                <p>Fresh pomegranates, warm millet rotis, farm eggs, and mountain honey served on the east-facing terrace.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-entry">
-            <div class="timeline-time">11:00</div>
-            <div class="timeline-card">
-              <div class="timeline-img-wrap">
-                <img src="/images/timeline-temple.jpg" alt="Forest temple ruins and green valley (Sample image)" class="timeline-img" loading="lazy" width="1000" height="667" />
-              </div>
-              <div class="timeline-body">
-                <h3>Forest &amp; Valley Walks</h3>
-                <p>A short drive into the forested gorge of Ranakpur or a swim in the stone stepwell pool during the quiet midday hours.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-entry">
-            <div class="timeline-time">17:30</div>
-            <div class="timeline-card">
-              <div class="timeline-img-wrap">
-                <img src="/images/timeline-sunset.jpg" alt="Sunset over water and rocks with tea setup (Sample image)" class="timeline-img" loading="lazy" width="1000" height="667" />
-              </div>
-              <div class="timeline-body">
-                <h3>Sunset on the Rocks</h3>
-                <p>Cardamom chai and savory pakoras served atop the granite boulders as the sky turns deep terracotta and violet.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="timeline-entry">
-            <div class="timeline-time">20:00</div>
-            <div class="timeline-card">
-              <div class="timeline-img-wrap">
-                <img src="/images/timeline-dinner.jpg" alt="Candlelit courtyard dinner with brass lamps (Sample image)" class="timeline-img" loading="lazy" width="1000" height="667" />
-              </div>
-              <div class="timeline-body">
-                <h3>Candlelit Stepwell Dinner</h3>
-                <p>Slow-cooked Mewari curries, clay-oven flatbreads, and folk instrumentalists around open fire pits.</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 4. ACCOMMODATIONS / SUITES (Magazine editorial style) -->
-    <section id="suites" class="editorial-section" aria-label="Suites and Living">
-      <div class="editorial-container">
-        
-        <div class="section-header-block">
-          <span class="editorial-kicker">Accommodations</span>
-          <h2 class="section-main-heading">16 suites in sandstone and granite.</h2>
-          <p class="section-lead-paragraph">
-            Private quarters built with regional stone, wooden shuttered balconies, and views across the ridge.
-          </p>
-        </div>
-
-        <div class="suites-magazine-layout">
-          
-          <!-- Suite 1: Aravalli Forest Suite -->
-          <article class="suite-feature-block">
-            <div class="suite-visual-side">
-              <img 
-                src="/images/suite-forest.jpg" 
-                alt="Aravalli Forest Suite bedroom with linen and balcony view (Sample image)" 
-                class="suite-large-photo"
-                loading="lazy"
-                width="1600"
-                height="1066"
-              />
-              <span class="image-caption-tag">Aravalli Forest Suite (Sample image)</span>
-            </div>
-            <div class="suite-content-side">
-              <span class="suite-number-tag">Suite 01 &middot; Forest Wing</span>
-              <h3 class="suite-name">Aravalli Forest Suite</h3>
-              <p class="suite-narrative">
-                Wide glass doors open onto a private stone jharokha balcony facing the acacia canopy. Features a deep copper soaking bath, natural linen bedding, and a four-poster Sheesham bed.
-              </p>
-              
-              <div class="suite-amenity-pills">
-                <span>Forest balcony</span>
-                <span>Plunge pool</span>
-                <span>King bed</span>
-              </div>
-
-              <div class="suite-card-footer">
-                <div class="suite-price-line">
-                  From &#8377;38,000 <span class="rate-qualifier">per night (sample) &middot; excludes taxes</span>
-                </div>
-                <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" data-suite="Aravalli Forest Suite">
-                  Enquire for this suite
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Suite 2: Jawai Granite Pavilion -->
-          <article class="suite-feature-block reversed">
-            <div class="suite-visual-side">
-              <img 
-                src="/images/suite-granite.jpg" 
-                alt="Jawai Granite Pavilion safari tent and deck (Sample image)" 
-                class="suite-large-photo"
-                loading="lazy"
-                width="1600"
-                height="1066"
-              />
-              <span class="image-caption-tag">Jawai Granite Pavilion (Sample image)</span>
-            </div>
-            <div class="suite-content-side">
-              <span class="suite-number-tag">Suite 02 &middot; Granite Ridge</span>
-              <h3 class="suite-name">Jawai Granite Pavilion</h3>
-              <p class="suite-narrative">
-                Positioned directly alongside pre-Cambrian granite boulders. Includes an expansive wooden observation deck with a brass telescope for stargazing, outdoor rain shower, and leather reading chairs.
-              </p>
-              
-              <div class="suite-amenity-pills">
-                <span>Stargazing deck</span>
-                <span>Outdoor shower</span>
-                <span>Brass telescope</span>
-              </div>
-
-              <div class="suite-card-footer">
-                <div class="suite-price-line">
-                  From &#8377;46,000 <span class="rate-qualifier">per night (sample) &middot; excludes taxes</span>
-                </div>
-                <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" data-suite="Jawai Granite Pavilion">
-                  Enquire for this suite
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Suite 3: Rabari Courtyard Villa -->
-          <article class="suite-feature-block">
-            <div class="suite-visual-side">
-              <img 
-                src="/images/suite-courtyard.jpg" 
-                alt="Rabari Courtyard Villa private pool and stone courtyard (Sample image)" 
-                class="suite-large-photo"
-                loading="lazy"
-                width="1600"
-                height="1066"
-              />
-              <span class="image-caption-tag">Rabari Courtyard Villa (Sample image)</span>
-            </div>
-            <div class="suite-content-side">
-              <span class="suite-number-tag">Suite 03 &middot; Private Courtyard</span>
-              <h3 class="suite-name">Rabari Courtyard Villa</h3>
-              <p class="suite-narrative">
-                A stone villa with a walled private courtyard, heated plunge pool, hand-embroidered Rabari textiles, and an open fire pit for winter evenings under the desert sky.
-              </p>
-              
-              <div class="suite-amenity-pills">
-                <span>Private courtyard</span>
-                <span>Heated pool</span>
-                <span>Fire pit</span>
-              </div>
-
-              <div class="suite-card-footer">
-                <div class="suite-price-line">
-                  From &#8377;54,000 <span class="rate-qualifier">per night (sample) &middot; excludes taxes</span>
-                </div>
-                <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" data-suite="Rabari Courtyard Villa">
-                  Enquire for this suite
-                </button>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-      </div>
-    </section>
-
-    <!-- DARK SECTION 2: DINING (Atmospheric Espresso Section) -->
-    <section id="dining" class="editorial-section bg-dark" aria-label="Dining and Food">
-      <div class="editorial-container">
-        
-        <div class="section-header-block">
-          <span class="editorial-kicker light">Kitchen &amp; Cellar</span>
-          <h2 class="section-main-heading light">Wood-fire cooking and stepwell dinners.</h2>
-          <p class="section-lead-paragraph light">
-            Simple food rooted in Mewari culinary heritage. Ingredients sourced from our kitchen garden and farms nearby.
-          </p>
-        </div>
-
-        <div class="dining-magazine-grid">
-          <div class="dining-hero-image-wrap">
-            <img 
-              src="/images/dining-hero.jpg" 
-              alt="Candlelit courtyard dinner with brass lamps and stepwell reflection (Sample image)" 
-              class="dining-hero-img"
-              loading="lazy"
-              width="2000"
-              height="1200"
-            />
-            <span class="image-caption-tag light">Evening dining beside the candlelit stepwell (Sample image)</span>
-          </div>
-
-          <div class="dining-details-grid">
-            <div class="dining-text-card">
-              <h3>Baori Stepwell Dining</h3>
+    <!-- 2. INTRODUCTION SECTION -->
+    <section id="intro" class="editorial-section bg-cream" aria-label="Introduction">
+      <div class="section-container">
+        <div class="intro-grid">
+          <div class="intro-text-col">
+            <span class="kicker">The Setting</span>
+            <h2 class="section-heading">Between granite boulders and forest valleys.</h2>
+            <div class="intro-body-paragraphs">
               <p>
-                Dinner is served along the stone tiers of the stepwell under lantern light. Expect clay-pot braised mutton, smoked dal bati with wild ghee, hand-pressed millet breads, and seasonal vegetable preserves.
+                Aravalli Retreat rests in a quiet valley corridor between the forested hills of Ranakpur and the granite outcrops of Jawai. Days follow the movement of the sun, from morning drives tracking wild leopards to sunset chai served atop the warm stone ridges.
+              </p>
+              <p>
+                Built using local yellow sandstone and native granite, the lodge blends directly into the landscape. Open courtyards, shaded neem verandas, and stone walkways offer an undisturbed stay in rural Rajasthan.
               </p>
             </div>
+            <div class="intro-stats-line">
+              <div class="stat-item">
+                <span class="stat-value">16</span>
+                <span class="stat-label">Suites (Sample)</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-value">25m</span>
+                <span class="stat-label">Stepwell Pool</span>
+              </div>
+              <div class="stat-divider"></div>
+              <div class="stat-item">
+                <span class="stat-value">4x4</span>
+                <span class="stat-label">Guided Drives</span>
+              </div>
+            </div>
+          </div>
 
-            <div class="dining-text-card">
-              <h3>Terrace &amp; Bush Breakfasts</h3>
-              <p>
-                Early morning tea with cardamom, freshly baked almond loaf, local sheep milk yogurt, and eggs prepared to order over open coals following morning safaris.
+          <div class="intro-image-col">
+            <figure class="editorial-figure">
+              <img 
+                src="/images/intro.jpg" 
+                alt="Morning sun over stone courtyard terrace (Sample image)" 
+                class="editorial-img"
+                loading="lazy"
+                width="1600"
+                height="1066"
+              />
+              <figcaption class="caption-text">Morning light over the courtyard terrace. Sample image.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. STAY / SUITES SECTION -->
+    <section id="stay" class="editorial-section bg-sand" aria-label="Accommodations">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <span class="kicker">Accommodations</span>
+          <h2 class="section-heading">Sandstone and granite suites.</h2>
+          <p class="section-lead">Private quarters built with regional stone, wooden shuttered balconies, and views across the ridge (Sample: 16 suites).</p>
+        </div>
+
+        <div class="suites-list">
+          
+          <!-- Suite 1 -->
+          <article class="suite-row">
+            <div class="suite-media-col">
+              <figure class="editorial-figure">
+                <img 
+                  src="/images/suite-forest.jpg" 
+                  alt="Aravalli Forest Suite bedroom with linen bedding and balcony view (Sample image)" 
+                  class="editorial-img suite-img"
+                  loading="lazy"
+                  width="1600"
+                  height="1066"
+                />
+                <figcaption class="caption-text">Aravalli Forest Suite. Sample image.</figcaption>
+              </figure>
+            </div>
+            <div class="suite-text-col">
+              <span class="suite-index">Suite 01 &middot; Forest Wing</span>
+              <h3 class="suite-title">Aravalli Forest Suite</h3>
+              <p class="suite-desc">
+                Wide glass doors open onto a private stone terrace facing the forest canopy. Features a deep copper bath, natural linen, and a four-poster bed.
+              </p>
+              <div class="suite-tags">
+                <span class="suite-tag">Forest Terrace</span>
+                <span class="suite-tag">Plunge Pool</span>
+                <span class="suite-tag">King Bed</span>
+              </div>
+              <div class="suite-pricing-bar">
+                <div class="price-box">
+                  <span class="price-val">From &#8377;38,000</span>
+                  <span class="price-qualifier">per night (sample) &middot; excludes taxes</span>
+                </div>
+                <a href="#enquire" class="btn-editorial suite-enquire-btn" data-suite="Aravalli Forest Suite">Enquire for this suite</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suite 2 (Reversed layout) -->
+          <article class="suite-row reversed">
+            <div class="suite-media-col">
+              <figure class="editorial-figure">
+                <img 
+                  src="/images/suite-granite.jpg" 
+                  alt="Jawai Granite Pavilion observation deck and bedroom (Sample image)" 
+                  class="editorial-img suite-img"
+                  loading="lazy"
+                  width="1600"
+                  height="1066"
+                />
+                <figcaption class="caption-text">Jawai Granite Pavilion. Sample image.</figcaption>
+              </figure>
+            </div>
+            <div class="suite-text-col">
+              <span class="suite-index">Suite 02 &middot; Granite Ridge</span>
+              <h3 class="suite-title">Jawai Granite Pavilion</h3>
+              <p class="suite-desc">
+                Built alongside ancient granite formations. Includes an open observation deck with a telescope for stargazing, an outdoor stone shower, and reading chairs.
+              </p>
+              <div class="suite-tags">
+                <span class="suite-tag">Stargazing Deck</span>
+                <span class="suite-tag">Outdoor Shower</span>
+                <span class="suite-tag">Telescope</span>
+              </div>
+              <div class="suite-pricing-bar">
+                <div class="price-box">
+                  <span class="price-val">From &#8377;46,000</span>
+                  <span class="price-qualifier">per night (sample) &middot; excludes taxes</span>
+                </div>
+                <a href="#enquire" class="btn-editorial suite-enquire-btn" data-suite="Jawai Granite Pavilion">Enquire for this suite</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Suite 3 -->
+          <article class="suite-row">
+            <div class="suite-media-col">
+              <figure class="editorial-figure">
+                <img 
+                  src="/images/suite-courtyard.jpg" 
+                  alt="Rabari Courtyard Villa stone courtyard and pool (Sample image)" 
+                  class="editorial-img suite-img"
+                  loading="lazy"
+                  width="1600"
+                  height="1066"
+                />
+                <figcaption class="caption-text">Rabari Courtyard Villa. Sample image.</figcaption>
+              </figure>
+            </div>
+            <div class="suite-text-col">
+              <span class="suite-index">Suite 03 &middot; Private Courtyard</span>
+              <h3 class="suite-title">Rabari Courtyard Villa</h3>
+              <p class="suite-desc">
+                A private stone villa with an enclosed walled courtyard, heated plunge pool, regional hand-woven textiles, and an open hearth for winter evenings.
+              </p>
+              <div class="suite-tags">
+                <span class="suite-tag">Walled Courtyard</span>
+                <span class="suite-tag">Heated Pool</span>
+                <span class="suite-tag">Fire Pit</span>
+              </div>
+              <div class="suite-pricing-bar">
+                <div class="price-box">
+                  <span class="price-val">From &#8377;54,000</span>
+                  <span class="price-qualifier">per night (sample) &middot; excludes taxes</span>
+                </div>
+                <a href="#enquire" class="btn-editorial suite-enquire-btn" data-suite="Rabari Courtyard Villa">Enquire for this suite</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 4. DINING SECTION (Full-bleed Dark Espresso Section) -->
+    <section id="dining" class="editorial-section bg-espresso text-light" aria-label="Dining and Kitchen">
+      <div class="section-container">
+        
+        <div class="section-header">
+          <span class="kicker kicker-light">Kitchen &amp; Hearth</span>
+          <h2 class="section-heading text-light">Wood-fire cooking and stepwell dinners.</h2>
+          <p class="section-lead text-light-muted">
+            Dishes rooted in regional Mewari recipes, cooked over slow wood embers with seasonal produce from local growers.
+          </p>
+        </div>
+
+        <div class="dining-visual-grid">
+          <div class="dining-card">
+            <figure class="editorial-figure">
+              <img 
+                src="/images/dining-1.jpg" 
+                alt="Dinner setup beside candlelit stone stepwell (Sample image)" 
+                class="editorial-img"
+                loading="lazy"
+                width="1600"
+                height="1066"
+              />
+              <figcaption class="caption-text text-light-muted">Stepwell dining illuminated by oil lamps. Sample image.</figcaption>
+            </figure>
+            <div class="dining-info">
+              <h3 class="dining-title text-light">Baori Stepwell Dining</h3>
+              <p class="dining-desc text-light-muted">
+                Dinner is served along the stone steps of the stepwell under lantern light. Slow-cooked lentils, wood-fired flatbreads, and regional winter specialties.
+              </p>
+            </div>
+          </div>
+
+          <div class="dining-card">
+            <figure class="editorial-figure">
+              <img 
+                src="/images/dining-2.jpg" 
+                alt="Morning breakfast on the east terrace with pastries and fruit (Sample image)" 
+                class="editorial-img"
+                loading="lazy"
+                width="1600"
+                height="1066"
+              />
+              <figcaption class="caption-text text-light-muted">Breakfast terrace with morning light. Sample image.</figcaption>
+            </figure>
+            <div class="dining-info">
+              <h3 class="dining-title text-light">Terrace Mornings</h3>
+              <p class="dining-desc text-light-muted">
+                Freshly pressed pomegranate juice, warm millet bread, farm eggs, and mountain honey served on the east-facing stone terrace following dawn drives.
               </p>
             </div>
           </div>
@@ -492,158 +347,205 @@
       </div>
     </section>
 
-    <!-- 5. EXPERIENCES -->
-    <section id="experiences" class="editorial-section" aria-label="Field Journeys">
-      <div class="editorial-container">
+    <!-- 5. EXPERIENCES SECTION -->
+    <section id="experiences" class="editorial-section bg-cream" aria-label="Field Journeys">
+      <div class="section-container">
         
-        <div class="section-header-block">
-          <span class="editorial-kicker">Field Journeys</span>
-          <h2 class="section-main-heading">Guided outings into the wild and the valleys.</h2>
-          <p class="section-lead-paragraph">
-            Accompanied by naturalists and guides from neighboring villages.
-          </p>
+        <div class="section-header">
+          <span class="kicker">Field Journeys</span>
+          <h2 class="section-heading">Guided outings into the wild.</h2>
+          <p class="section-lead">Accompanied by resident naturalists and guides from neighboring villages.</p>
+        </div>
+
+        <div class="wildlife-disclaimer-box">
+          <p class="disclaimer-text"><strong>Wildlife notice:</strong> Sightings are not guaranteed. Drives follow natural wildlife movements and ethical tracking protocols.</p>
         </div>
 
         <div class="experiences-grid">
           
-          <div class="exp-card">
-            <div class="exp-photo-wrap">
+          <article class="exp-item">
+            <figure class="editorial-figure">
               <img 
                 src="/images/exp-safari.jpg" 
-                alt="4x4 safari tracker searching across rocky landscape (Sample image)" 
-                class="exp-photo"
+                alt="4x4 tracker searching across granite hills (Sample image)" 
+                class="editorial-img"
                 loading="lazy"
                 width="1000"
                 height="667"
               />
-              <span class="image-caption-tag">Open 4x4 safari drive (Sample image)</span>
-            </div>
+              <figcaption class="caption-text">Tracking drive at dawn. Sample image.</figcaption>
+            </figure>
             <h3 class="exp-title">Jawai Leopard Safaris</h3>
-            <p class="exp-text">
-              Morning and dusk tracking drives across granite boulder outcrops where wild leopards live in harmony with the pastoral landscape.
+            <p class="exp-desc">
+              Early morning drives across granite hills where leopards move across the open rock. Trackers use ancestral route knowledge to navigate the terrain.
             </p>
-            <p class="exp-disclaimer">
-              *Note: Wildlife sightings depend on natural animal movements and cannot be guaranteed.
-            </p>
-          </div>
+          </article>
 
-          <div class="exp-card">
-            <div class="exp-photo-wrap">
+          <article class="exp-item">
+            <figure class="editorial-figure">
               <img 
-                src="/images/exp-ranakpur.jpg" 
-                alt="Carved temple columns at Ranakpur (Sample image)" 
-                class="exp-photo"
+                src="/images/exp-temple.jpg" 
+                alt="Carved stone columns at Ranakpur temple complex (Sample image)" 
+                class="editorial-img"
                 loading="lazy"
                 width="1000"
                 height="667"
               />
-              <span class="image-caption-tag">15th-century temple columns at Ranakpur (Sample image)</span>
-            </div>
-            <h3 class="exp-title">Ranakpur Dawn Temple Walk</h3>
-            <p class="exp-text">
-              Early morning private visit to the 15th-century Ranakpur temple complex, walking through 1,444 uniquely carved marble columns before general public hours.
+              <figcaption class="caption-text">Carved marble columns at Ranakpur. Sample image.</figcaption>
+            </figure>
+            <h3 class="exp-title">Ranakpur Temple Walk</h3>
+            <p class="exp-desc">
+              Morning walk through the quiet 15th-century forest temple, exploring its 1,444 sculpted marble pillars before public hours.
             </p>
-          </div>
+          </article>
 
-          <div class="exp-card">
-            <div class="exp-photo-wrap">
+          <article class="exp-item">
+            <figure class="editorial-figure">
               <img 
-                src="/images/exp-rabari.jpg" 
-                alt="Rabari pastoral shepherd walking across scrubland (Sample image)" 
-                class="exp-photo"
+                src="/images/exp-village.jpg" 
+                alt="Rabari elder walking on pasture route (Sample image)" 
+                class="editorial-img"
                 loading="lazy"
                 width="1000"
                 height="667"
               />
-              <span class="image-caption-tag">Rabari shepherd on ancestral grazing route (Sample image)</span>
-            </div>
+              <figcaption class="caption-text">Rabari elder on grazing path. Sample image.</figcaption>
+            </figure>
             <h3 class="exp-title">Rabari Pastoral Walk</h3>
-            <p class="exp-text">
-              Walk alongside nomadic Rabari elders along ancestral grazing paths and learn about their centuries-old coexistence with the leopards.
+            <p class="exp-desc">
+              Walk with Rabari herders along pastoral routes and observe their generational living beside the granite hills and wildlife corridors.
             </p>
-          </div>
+          </article>
 
-          <div class="exp-card">
-            <div class="exp-photo-wrap">
+          <article class="exp-item">
+            <figure class="editorial-figure">
               <img 
-                src="/images/exp-wetlands.jpg" 
-                alt="Migratory water birds at Jawai Dam (Sample image)" 
-                class="exp-photo"
+                src="/images/exp-lake.jpg" 
+                alt="Wetlands and birds at Jawai Dam (Sample image)" 
+                class="editorial-img"
                 loading="lazy"
                 width="1000"
                 height="667"
               />
-              <span class="image-caption-tag">Jawai Bandh wetlands (Sample image)</span>
-            </div>
-            <h3 class="exp-title">Jawai Bandh Wetlands</h3>
-            <p class="exp-text">
-              Afternoon birdwatching by the lake banks. In winter, the waters host flamingos, pelicans, sarus cranes, and resident mugger crocodiles.
+              <figcaption class="caption-text">Wetlands and granite horizon. Sample image.</figcaption>
+            </figure>
+            <h3 class="exp-title">Jawai Dam Wetlands</h3>
+            <p class="exp-desc">
+              Afternoon birdwatching by the lake shores, where migratory flamingos, cranes, and marsh crocodiles gather during winter months.
             </p>
-          </div>
+          </article>
 
         </div>
 
       </div>
     </section>
 
-    <!-- 6. GALLERY (Diverse moments: pool, bedroom, fire pit, hills) -->
-    <section id="gallery" class="editorial-section bg-secondary" aria-label="Visual Gallery">
-      <div class="editorial-container">
+    <!-- 6. GALLERY SECTION -->
+    <section id="gallery" class="editorial-section bg-sand" aria-label="Visual Gallery">
+      <div class="section-container">
         
-        <div class="section-header-block">
-          <span class="editorial-kicker">Atmosphere</span>
-          <h2 class="section-main-heading">Moments across the retreat.</h2>
-          <p class="section-lead-paragraph">
-            Poolside afternoons, fire pits under the stars, and views over the hills.
-          </p>
+        <div class="section-header">
+          <span class="kicker">Atmosphere</span>
+          <h2 class="section-heading">Moments across the retreat.</h2>
+          <p class="section-lead">Quiet hours, granite landscapes, and evening fires.</p>
         </div>
 
-        <div class="gallery-grid">
-          <div class="gallery-item item-large" data-index="0" data-src="/images/gallery-pool.jpg" data-caption="Stepwell swimming pool shaded by native trees (Sample image)">
-            <img src="/images/gallery-pool.jpg" alt="Stepwell swimming pool shaded by native trees (Sample image)" class="gallery-photo" loading="lazy" width="1200" height="800" />
-            <span class="image-caption-tag">Stepwell pool (Sample image)</span>
-          </div>
+        <div class="gallery-mosaic-grid">
+          <figure class="gallery-tile tile-wide">
+            <img 
+              src="/images/gallery-1.jpg" 
+              alt="Stone swimming pool with sunbeds (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Stone pool terrace. Sample image.</figcaption>
+          </figure>
 
-          <div class="gallery-item" data-index="1" data-src="/images/gallery-room.jpg" data-caption="Suite interior with linen and wooden louvers (Sample image)">
-            <img src="/images/gallery-room.jpg" alt="Suite interior with linen and wooden louvers (Sample image)" class="gallery-photo" loading="lazy" width="1200" height="800" />
-            <span class="image-caption-tag">Suite bedroom (Sample image)</span>
-          </div>
+          <figure class="gallery-tile">
+            <img 
+              src="/images/gallery-2.jpg" 
+              alt="Bedroom interior with natural linens (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Suite living space. Sample image.</figcaption>
+          </figure>
 
-          <div class="gallery-item" data-index="2" data-src="/images/gallery-firepit.jpg" data-caption="Open fire pit under starlight (Sample image)">
-            <img src="/images/gallery-firepit.jpg" alt="Open fire pit under starlight (Sample image)" class="gallery-photo" loading="lazy" width="1200" height="800" />
-            <span class="image-caption-tag">Evening fire pit (Sample image)</span>
-          </div>
+          <figure class="gallery-tile">
+            <img 
+              src="/images/gallery-3.jpg" 
+              alt="Sandstone courtyard walkways (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Sandstone walkways. Sample image.</figcaption>
+          </figure>
 
-          <div class="gallery-item item-wide" data-index="3" data-src="/images/gallery-hills.jpg" data-caption="Aravalli ridges and granite boulder scenery (Sample image)">
-            <img src="/images/gallery-hills.jpg" alt="Aravalli ridges and granite boulder scenery (Sample image)" class="gallery-photo" loading="lazy" width="1200" height="800" />
-            <span class="image-caption-tag">Surrounding hills (Sample image)</span>
-          </div>
+          <figure class="gallery-tile">
+            <img 
+              src="/images/gallery-4.jpg" 
+              alt="Granite ridges at sunset (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Granite ridges at sunset. Sample image.</figcaption>
+          </figure>
+
+          <figure class="gallery-tile">
+            <img 
+              src="/images/gallery-5.jpg" 
+              alt="Evening fire pit under starlight (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Evening fire pit under starlight. Sample image.</figcaption>
+          </figure>
+
+          <figure class="gallery-tile tile-wide">
+            <img 
+              src="/images/gallery-6.jpg" 
+              alt="Distant Aravalli mountain horizon (Sample image)" 
+              class="editorial-img"
+              loading="lazy"
+              width="1200"
+              height="800"
+            />
+            <figcaption class="caption-text">Distant Aravalli ranges. Sample image.</figcaption>
+          </figure>
         </div>
 
       </div>
     </section>
 
-    <!-- 7. LOCATION & ARRIVAL (Merged with Corridor Map) -->
-    <section id="location" class="editorial-section" aria-label="Location and Arrival">
-      <div class="editorial-container">
+    <!-- 7. LOCATION SECTION -->
+    <section id="location" class="editorial-section bg-cream" aria-label="Location and Travel">
+      <div class="section-container">
         
-        <div class="section-header-block">
-          <span class="editorial-kicker">Arrival &amp; Setting</span>
-          <h2 class="section-main-heading">In the Pali district between Ranakpur and Jawai.</h2>
-          <p class="section-lead-paragraph">
-            Reached by private car from Udaipur airport (2.5 hours) or Falna railway station (40 minutes).
-          </p>
+        <div class="section-header">
+          <span class="kicker">Arrival &amp; Setting</span>
+          <h2 class="section-heading">In the Pali district between Ranakpur and Jawai.</h2>
+          <p class="section-lead">Situated in a secluded valley corridor off the state highway (Sample distances).</p>
         </div>
 
-        <div class="location-merged-grid">
+        <div class="location-grid">
           
-          <div class="location-info-col">
-            <h3 class="location-subhead">Travel Distances</h3>
-            <p class="location-desc">
-              Situated in an undisturbed valley corridor off the state highway. Private chauffeur transfers can be arranged in advance.
+          <div class="location-text-col">
+            <h3 class="location-subhead">Travel Distances (Sample)</h3>
+            <p class="location-note">
+              Private car transfers can be scheduled in advance from Udaipur airport or Falna railway station.
             </p>
 
-            <table class="distance-table">
+            <table class="distances-table">
               <thead>
                 <tr>
                   <th scope="col">Destination</th>
@@ -680,62 +582,23 @@
               </tbody>
             </table>
 
-            <div class="arrival-note-box">
-              <p><strong>Sample policy:</strong> Airport transfers must be booked 48 hours in advance. Chauffeurs meet arriving guests with private air-conditioned vehicles.</p>
+            <div class="arrival-policy-box">
+              <p><strong>Transfer note (sample):</strong> Airport pickups must be requested at least 48 hours before check-in.</p>
             </div>
           </div>
 
-          <div class="location-map-col">
-            <div class="interactive-map-frame">
-              
-              <div class="map-chip-selector">
-                <button type="button" class="map-chip active" data-point="retreat">Aravalli Retreat</button>
-                <button type="button" class="map-chip" data-point="ranakpur">Ranakpur</button>
-                <button type="button" class="map-chip" data-point="jawai">Jawai Rocks</button>
-                <button type="button" class="map-chip" data-point="dam">Jawai Dam</button>
-                <button type="button" class="map-chip" data-point="udaipur">Udaipur Gateway</button>
-              </div>
-
-              <div class="map-visual-area">
-                <img 
-                  src="/images/location-hills.jpg" 
-                  alt="Aravalli hills landscape (Sample image)" 
-                  class="map-bg-photo"
-                  loading="lazy"
-                  width="1600"
-                  height="1000"
-                />
-                
-                <div class="map-marker-pin pin-retreat active" style="top: 48%; left: 48%;" data-point="retreat" aria-label="Aravalli Retreat Location">
-                  <span class="pin-dot"></span>
-                  <span class="pin-title">Aravalli Retreat</span>
-                </div>
-                <div class="map-marker-pin pin-ranakpur" style="top: 65%; left: 30%;" data-point="ranakpur" aria-label="Ranakpur Location">
-                  <span class="pin-dot"></span>
-                  <span class="pin-title">Ranakpur</span>
-                </div>
-                <div class="map-marker-pin pin-jawai" style="top: 36%; left: 66%;" data-point="jawai" aria-label="Jawai Leopards Location">
-                  <span class="pin-dot"></span>
-                  <span class="pin-title">Jawai Leopards</span>
-                </div>
-                <div class="map-marker-pin pin-dam" style="top: 22%; left: 80%;" data-point="dam" aria-label="Jawai Dam Location">
-                  <span class="pin-dot"></span>
-                  <span class="pin-title">Jawai Dam</span>
-                </div>
-                <div class="map-marker-pin pin-udaipur" style="top: 82%; left: 16%;" data-point="udaipur" aria-label="Udaipur Airport Location">
-                  <span class="pin-dot"></span>
-                  <span class="pin-title">Udaipur Airport</span>
-                </div>
-              </div>
-
-              <div class="map-point-detail-box" id="map-point-detail">
-                <h4 id="map-detail-title">Aravalli Retreat (Center)</h4>
-                <p id="map-detail-text">
-                  Secluded valley setting in the Pali district. Elevation ~520 m MSL (Sample). Surrounding acacia forests and granite hills.
-                </p>
-              </div>
-
-            </div>
+          <div class="location-media-col">
+            <figure class="editorial-figure">
+              <img 
+                src="/images/location.jpg" 
+                alt="Granite boulder landscape of southern Rajasthan (Sample image)" 
+                class="editorial-img"
+                loading="lazy"
+                width="1600"
+                height="1000"
+              />
+              <figcaption class="caption-text">Granite boulder landscape of southern Rajasthan. Sample image.</figcaption>
+            </figure>
           </div>
 
         </div>
@@ -743,367 +606,156 @@
       </div>
     </section>
 
-    <!-- 8. FREQUENTLY ASKED QUESTIONS -->
-    <section class="editorial-section bg-secondary" aria-label="Frequently Asked Questions">
-      <div class="editorial-container max-w-medium">
+    <!-- 8. ENQUIRE & FOOTER SECTION (Full-bleed Dark Espresso) -->
+    <section id="enquire" class="editorial-section bg-espresso text-light" aria-label="Reservation Enquiry">
+      <div class="section-container max-w-narrow">
         
-        <div class="section-header-block centered">
-          <span class="editorial-kicker">Guest Information</span>
-          <h2 class="section-main-heading">Frequently asked questions.</h2>
+        <div class="section-header centered">
+          <span class="kicker kicker-light">Reservations</span>
+          <h2 class="section-heading text-light">Plan your stay.</h2>
+          <p class="section-lead text-light-muted">
+            Submit an enquiry for room availability and season rates.
+          </p>
+          <div class="demo-notice-pill">Demo: no data is stored. Fictional sample website.</div>
         </div>
 
-        <div class="faq-accordion-group">
+        <div class="enquiry-form-card">
           
-          <details class="faq-accordion-item" open>
-            <summary class="faq-question">
-              <h3>What is the best season to visit?</h3>
-              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </summary>
-            <div class="faq-answer">
-              <p>October through early April brings clear skies and daytime temperatures between 22&deg;C and 28&deg;C, with cool evenings. Migratory birds arrive at the wetlands from November onward.</p>
+          <form id="enquiry-form" class="enquiry-form" novalidate>
+            <div class="form-row-2">
+              <div class="form-field">
+                <label for="enquiry-name" class="form-label">Full Name</label>
+                <input type="text" id="enquiry-name" class="form-input" placeholder="Your name" required />
+                <span class="field-error-msg" id="name-error">Please enter your name.</span>
+              </div>
+
+              <div class="form-field">
+                <label for="enquiry-email" class="form-label">Email Address</label>
+                <input type="email" id="enquiry-email" class="form-input" placeholder="name@example.com" required />
+                <span class="field-error-msg" id="email-error">Please enter a valid email address.</span>
+              </div>
             </div>
-          </details>
 
-          <details class="faq-accordion-item">
-            <summary class="faq-question">
-              <h3>Are leopard sightings guaranteed?</h3>
-              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </summary>
-            <div class="faq-answer">
-              <p>No. Leopard sightings depend entirely on natural animal movements and cannot be guaranteed. Our trackers know the granite territories well and head out at the most active hours.</p>
+            <div class="form-row-3">
+              <div class="form-field">
+                <label for="enquiry-checkin" class="form-label">Check-in Date</label>
+                <input type="date" id="enquiry-checkin" class="form-input" required />
+              </div>
+
+              <div class="form-field">
+                <label for="enquiry-checkout" class="form-label">Check-out Date</label>
+                <input type="date" id="enquiry-checkout" class="form-input" required />
+              </div>
+
+              <div class="form-field">
+                <label for="enquiry-guests" class="form-label">Guests</label>
+                <select id="enquiry-guests" class="form-select">
+                  <option value="1">1 Guest</option>
+                  <option value="2" selected>2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4+">4+ Guests</option>
+                </select>
+              </div>
             </div>
-          </details>
 
-          <details class="faq-accordion-item">
-            <summary class="faq-question">
-              <h3>What are the check-in and check-out times?</h3>
-              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </summary>
-            <div class="faq-answer">
-              <p><strong>Sample policy:</strong> Check-in is at 2:00 PM and check-out is at 11:00 AM. Early check-in is subject to availability on the day.</p>
+            <div class="form-row-1">
+              <div class="form-field">
+                <label for="enquiry-suite" class="form-label">Suite Preference</label>
+                <select id="enquiry-suite" class="form-select">
+                  <option value="Aravalli Forest Suite">Aravalli Forest Suite</option>
+                  <option value="Jawai Granite Pavilion">Jawai Granite Pavilion</option>
+                  <option value="Rabari Courtyard Villa">Rabari Courtyard Villa</option>
+                </select>
+              </div>
             </div>
-          </details>
 
-          <details class="faq-accordion-item">
-            <summary class="faq-question">
-              <h3>What is the cancellation policy?</h3>
-              <svg class="faq-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-            </summary>
-            <div class="faq-answer">
-              <p><strong>Sample policy:</strong> Cancellations up to 14 days before arrival receive a full refund. In this demo prototype, no real transactions or cancellations occur.</p>
+            <div class="form-row-1">
+              <div class="form-field">
+                <label for="enquiry-message" class="form-label">Notes or Dietary Preferences (Optional)</label>
+                <textarea id="enquiry-message" class="form-textarea" rows="3" placeholder="Tell us about special requests or travel timings..."></textarea>
+              </div>
             </div>
-          </details>
 
-        </div>
+            <div class="form-dates-error" id="dates-error">Check-out date must be after check-in date.</div>
 
-      </div>
-    </section>
+            <div class="form-submit-row">
+              <button type="submit" class="btn-editorial btn-terracotta submit-btn">
+                Send Enquiry (Demo)
+              </button>
+            </div>
+          </form>
 
-    <!-- 9. SIMPLE ENQUIRY FORM & DEMO NOTICE -->
-    <section id="enquiry" class="editorial-section" aria-label="Reservation Enquiry Form">
-      <div class="editorial-container">
-        
-        <div class="contact-grid">
-          
-          <div class="contact-info-block">
-            <span class="editorial-kicker">Plan Your Visit</span>
-            <h2 class="section-main-heading">Request a stay.</h2>
-            <p>
-              Submit an enquiry with your preferred dates and suite. Our reservations desk will get back to you with rates and availability.
+          <!-- Success State -->
+          <div id="enquiry-success" class="enquiry-success-box" style="display: none;">
+            <div class="success-icon">&#10003;</div>
+            <h3 class="success-title text-light">Enquiry Received (Sample Demo)</h3>
+            <p class="success-text text-light-muted">
+              Thank you for testing the demo. No personal data has been stored or transmitted.
             </p>
-            
-            <div class="contact-details-list">
-              <div class="c-item">
-                <span class="c-label">Reservations (Sample):</span>
-                <span class="c-val">+91 00000 00000</span>
+            <div class="success-summary-box">
+              <div class="summary-line">
+                <span class="summary-key">Sample Reference:</span>
+                <span class="summary-val" id="summary-ref">#ARV-SAMPLE-2026</span>
               </div>
-              <div class="c-item">
-                <span class="c-label">Email (Sample):</span>
-                <span class="c-val">enquiries@aravalliretreat.example.com</span>
+              <div class="summary-line">
+                <span class="summary-key">Suite:</span>
+                <span class="summary-val" id="summary-suite">Aravalli Forest Suite</span>
               </div>
-              <div class="c-item">
-                <span class="c-label">Location:</span>
-                <span class="c-val">Ranakpur &ndash; Jawai Corridor, Pali District, Rajasthan</span>
+              <div class="summary-line">
+                <span class="summary-key">Stay Dates:</span>
+                <span class="summary-val" id="summary-dates">Oct 12 to Oct 15</span>
               </div>
             </div>
-          </div>
-
-          <div class="contact-action-block">
-            <div class="demo-box-card">
-              <div class="demo-tag-banner">
-                <strong>Demo Notice:</strong> This is a sample prototype. No real bookings are stored or charged.
-              </div>
-
-              <form id="inline-enquiry-form" class="inline-enquiry-form" novalidate>
-                <div class="form-unit">
-                  <label for="inline-name">Full Name *</label>
-                  <input type="text" id="inline-name" class="editorial-input" placeholder="e.g. Gayatri Devi" required />
-                  <div id="inline-name-error" class="input-error-msg"></div>
-                </div>
-
-                <div class="form-unit">
-                  <label for="inline-email">Email Address *</label>
-                  <input type="email" id="inline-email" class="editorial-input" placeholder="e.g. gayatri@example.com" required />
-                  <div id="inline-email-error" class="input-error-msg"></div>
-                </div>
-
-                <div class="form-row-2">
-                  <div class="form-unit">
-                    <label for="inline-checkin">Check-in *</label>
-                    <input type="date" id="inline-checkin" class="editorial-input" required />
-                  </div>
-                  <div class="form-unit">
-                    <label for="inline-checkout">Check-out *</label>
-                    <input type="date" id="inline-checkout" class="editorial-input" required />
-                  </div>
-                </div>
-                <div id="inline-dates-error" class="input-error-msg" style="margin-top: -8px; margin-bottom: 12px;"></div>
-
-                <div class="form-row-2">
-                  <div class="form-unit">
-                    <label for="inline-suite">Suite</label>
-                    <select id="inline-suite" class="editorial-input">
-                      <option value="Aravalli Forest Suite">Aravalli Forest Suite</option>
-                      <option value="Jawai Granite Pavilion">Jawai Granite Pavilion</option>
-                      <option value="Rabari Courtyard Villa">Rabari Courtyard Villa</option>
-                    </select>
-                  </div>
-                  <div class="form-unit">
-                    <label for="inline-guests">Guests</label>
-                    <select id="inline-guests" class="editorial-input">
-                      <option value="1">1 Guest</option>
-                      <option value="2" selected>2 Guests</option>
-                      <option value="3">3 Guests</option>
-                      <option value="4+">4+ Guests</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="form-unit">
-                  <label for="inline-notes">Special Requests &amp; Safari Notes</label>
-                  <textarea id="inline-notes" class="editorial-textarea" rows="3" placeholder="Tell us if you would like morning safaris, temple walks, or dietary preferences..."></textarea>
-                </div>
-
-                <button type="submit" class="btn-editorial btn-terracotta" style="width: 100%;">
-                  Submit Demo Enquiry
-                </button>
-              </form>
-
-              <!-- Inline Success Confirmation -->
-              <div id="inline-success-box" class="enquiry-success-box" style="display: none;">
-                <span class="editorial-kicker">Demo Enquiry Registered</span>
-                <h3>Thank you for your enquiry.</h3>
-                <p class="success-lead">We have recorded your simulated request with the details below.</p>
-                
-                <div class="receipt-card">
-                  <div class="receipt-row">
-                    <span>Reference (Sample):</span>
-                    <strong id="inline-receipt-ref">#ARV-DEMO-2849</strong>
-                  </div>
-                  <div class="receipt-row">
-                    <span>Suite:</span>
-                    <strong id="inline-receipt-suite">Aravalli Forest Suite</strong>
-                  </div>
-                  <div class="receipt-row">
-                    <span>Guests:</span>
-                    <strong id="inline-receipt-guests">2 Guests</strong>
-                  </div>
-                  <div class="receipt-row">
-                    <span>Dates:</span>
-                    <strong id="inline-receipt-dates">Selected Dates</strong>
-                  </div>
-                </div>
-
-                <div class="demo-no-storage-alert">
-                  <strong>Notice:</strong> No data is stored in this demo.
-                </div>
-              </div>
-
-            </div>
+            <button id="reset-enquiry-btn" class="btn-editorial reset-btn">Submit Another Enquiry</button>
           </div>
 
         </div>
 
       </div>
+
+      <!-- FOOTER -->
+      <footer class="editorial-footer" role="contentinfo">
+        <div class="section-container">
+          <div class="footer-grid">
+            
+            <div class="footer-brand-col">
+              <span class="footer-brand-title">Aravalli Retreat</span>
+              <p class="footer-brand-desc text-light-muted">
+                A fictional luxury wilderness lodge set between Ranakpur and Jawai in Rajasthan.
+              </p>
+            </div>
+
+            <div class="footer-contact-col">
+              <span class="footer-col-header">Reservations &amp; Enquiries</span>
+              <p class="footer-contact-line">Sample Phone: +91 00000 00000</p>
+              <p class="footer-contact-line">Sample Email: stay@aravalliretreat-sample.com</p>
+              <p class="footer-contact-line">Pali District, Rajasthan, India</p>
+            </div>
+
+            <div class="footer-nav-col">
+              <span class="footer-col-header">Navigation</span>
+              <ul class="footer-nav-list">
+                <li><a href="#stay" class="footer-link">Stay</a></li>
+                <li><a href="#dining" class="footer-link">Dining</a></li>
+                <li><a href="#experiences" class="footer-link">Experiences</a></li>
+                <li><a href="#gallery" class="footer-link">Gallery</a></li>
+                <li><a href="#location" class="footer-link">Location</a></li>
+              </ul>
+            </div>
+
+          </div>
+
+          <div class="footer-bottom-bar">
+            <p class="copyright-text text-light-muted">
+              &copy; 2026 Aravalli Retreat. Fictional sample demonstration website. No data stored.
+            </p>
+            <a href="#hero" class="back-to-top-link" aria-label="Return to top">Back to top &uarr;</a>
+          </div>
+        </div>
+      </footer>
     </section>
 
   </main>
-
-  <!-- FOOTER -->
-  <footer class="editorial-site-footer" role="contentinfo">
-    <div class="editorial-container">
-      <div class="footer-layout-row">
-        <div class="footer-left">
-          <span class="footer-brand">Aravalli Retreat</span>
-          <span class="footer-sub">Ranakpur &middot; Jawai &middot; Rajasthan</span>
-          <p class="footer-disclaimer">
-            A boutique hotel demonstration site. Sample images from Unsplash. No data is stored in this demo.
-          </p>
-        </div>
-        <div class="footer-right">
-          <ul class="footer-nav-links">
-            <li><a href="#story">The Stay</a></li>
-            <li><a href="#suites">Suites</a></li>
-            <li><a href="#timeline">A Day Here</a></li>
-            <li><a href="#dining">Dining</a></li>
-            <li><a href="#experiences">Experiences</a></li>
-            <li><a href="#gallery">Gallery</a></li>
-            <li><a href="#location">Location</a></li>
-          </ul>
-          <div class="footer-copyright">
-            &copy; 2026 Aravalli Retreat (Demo Prototype).
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- GALLERY LIGHTBOX MODAL -->
-  <div id="gallery-lightbox" class="editorial-modal-backdrop" role="dialog" aria-hidden="true" aria-label="Image Lightbox">
-    <div class="lightbox-dialog-box" data-lenis-prevent>
-      <button id="lightbox-close" class="modal-close-trigger lightbox-close-btn" aria-label="Close Lightbox">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-
-      <button id="lightbox-prev" class="lightbox-nav-btn prev" aria-label="Previous Image">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-      </button>
-      <button id="lightbox-next" class="lightbox-nav-btn next" aria-label="Next Image">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-      </button>
-
-      <div class="lightbox-img-wrapper">
-        <img id="lightbox-img" class="lightbox-dialog-photo" src="" alt="Enlarged gallery view" />
-      </div>
-
-      <div class="lightbox-caption-bar">
-        <span id="lightbox-caption" class="lightbox-caption-text"></span>
-        <span id="lightbox-counter" class="lightbox-counter-tag">1 / 4</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- POPUP ENQUIRY MODAL (Triggered by Navbar and Suite CTA buttons) -->
-  <div id="enquiry-modal" class="editorial-modal-backdrop" role="dialog" aria-hidden="true" aria-label="Reservation Enquiry">
-    <div class="enquiry-modal-sheet" data-lenis-prevent>
-      <button id="enquiry-modal-close" class="modal-close-trigger" aria-label="Close Enquiry Dialog">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-
-      <div class="demo-tag-banner">
-        <strong>Demo Notice:</strong> This is a sample prototype. No live booking or payment occurs.
-      </div>
-
-      <div id="enquiry-form-view">
-        <div class="enquiry-header">
-          <span class="editorial-kicker">Reservation Enquiry</span>
-          <h3 class="enquiry-title">Request a Stay</h3>
-        </div>
-
-        <form id="enquiry-form" novalidate>
-          <div class="form-unit">
-            <label for="guest-name">Full Name *</label>
-            <input type="text" id="guest-name" class="editorial-input" placeholder="e.g. Gayatri Devi" required />
-            <div id="name-error" class="input-error-msg"></div>
-          </div>
-
-          <div class="form-unit">
-            <label for="guest-email">Email Address *</label>
-            <input type="email" id="guest-email" class="editorial-input" placeholder="e.g. gayatri@example.com" required />
-            <div id="email-error" class="input-error-msg"></div>
-          </div>
-
-          <div class="form-row-2">
-            <div class="form-unit">
-              <label for="modal-checkin">Check-in Date *</label>
-              <input type="date" id="modal-checkin" class="editorial-input" required />
-            </div>
-            <div class="form-unit">
-              <label for="modal-checkout">Check-out Date *</label>
-              <input type="date" id="modal-checkout" class="editorial-input" required />
-            </div>
-          </div>
-          <div id="dates-error" class="input-error-msg" style="margin-top: -8px; margin-bottom: 12px;"></div>
-
-          <div class="form-row-2">
-            <div class="form-unit">
-              <label for="modal-suite">Preferred Suite</label>
-              <select id="modal-suite" class="editorial-input">
-                <option value="Aravalli Forest Suite">Aravalli Forest Suite</option>
-                <option value="Jawai Granite Pavilion">Jawai Granite Pavilion</option>
-                <option value="Rabari Courtyard Villa">Rabari Courtyard Villa</option>
-              </select>
-            </div>
-            <div class="form-unit">
-              <label for="modal-guests">Guests</label>
-              <select id="modal-guests" class="editorial-input">
-                <option value="1">1 Guest</option>
-                <option value="2" selected>2 Guests</option>
-                <option value="3">3 Guests</option>
-                <option value="4+">4+ Guests</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-unit">
-            <label for="special-requests">Notes &amp; Safari Preferences (Optional)</label>
-            <textarea id="special-requests" class="editorial-textarea" rows="3" placeholder="Let us know your safari interests, dietary preferences, or arrival arrangements..."></textarea>
-          </div>
-
-          <button type="submit" id="enquiry-submit-btn" class="btn-editorial btn-terracotta" style="width: 100%; margin-top: 10px;">
-            Submit Demo Enquiry
-          </button>
-        </form>
-      </div>
-
-      <div id="enquiry-success-view" class="enquiry-success-box" style="display: none;">
-        <span class="editorial-kicker">Demo Enquiry Registered</span>
-        <h3>Thank you for your enquiry.</h3>
-        <p class="success-lead">We have recorded your simulated request with the details below.</p>
-
-        <div class="receipt-card">
-          <div class="receipt-row">
-            <span>Reference (Sample):</span>
-            <strong id="receipt-ref">#ARV-DEMO-2849</strong>
-          </div>
-          <div class="receipt-row">
-            <span>Suite:</span>
-            <strong id="receipt-suite">Aravalli Forest Suite</strong>
-          </div>
-          <div class="receipt-row">
-            <span>Guests:</span>
-            <strong id="receipt-guests">2 Guests</strong>
-          </div>
-          <div class="receipt-row">
-            <span>Dates:</span>
-            <strong id="receipt-dates">Selected Dates</strong>
-          </div>
-        </div>
-
-        <div class="demo-no-storage-alert">
-          <strong>Notice:</strong> No data is stored in this demo.
-        </div>
-
-        <button type="button" id="success-close-btn" class="btn-editorial btn-terracotta" style="width: 100%; margin-top: 20px;">
-          Return to Website
-        </button>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Back to top button -->
-  <button id="back-to-top-btn" class="back-to-top-btn" aria-label="Return to top of page" title="Return to top">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M18 15l-6-6-6 6"/>
-    </svg>
-  </button>
 
   <script type="module" src="/src/main.js"></script>
 </body>
