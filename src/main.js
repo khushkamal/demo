@@ -2,7 +2,6 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { HeroScene } from './scenes/heroScene.js';
-import { soundscape } from './utils/audioEngine.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -16,7 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 const appState = {
   heroScene: null,
   activeLenis: null,
-  isAudioPlaying: false,
   galleryIndex: 0,
   galleryImages: [
     { src: '/images/gallery-pool.jpg', caption: 'Stepwell swimming pool shaded by native trees (Sample image)' },
@@ -225,31 +223,6 @@ function setupNavbar() {
     });
   }
 
-  // Soundscape audio toggle
-  const audioBtn = document.getElementById('audio-toggle-btn');
-  const audioBtnText = document.getElementById('audio-btn-text');
-  const mobileAudioBtn = document.getElementById('mobile-audio-toggle');
-  const mobileAudioText = document.getElementById('mobile-audio-text');
-
-  function toggleAudio() {
-    if (soundscape) {
-      soundscape.toggle();
-      appState.isAudioPlaying = soundscape.isPlaying;
-      const label = appState.isAudioPlaying ? 'Audio: On' : 'Audio: Off';
-      
-      if (audioBtn) {
-        audioBtn.classList.toggle('playing', appState.isAudioPlaying);
-        if (audioBtnText) audioBtnText.textContent = label;
-      }
-      if (mobileAudioBtn) {
-        mobileAudioBtn.classList.toggle('playing', appState.isAudioPlaying);
-        if (mobileAudioText) mobileAudioText.textContent = `Ambient ${label}`;
-      }
-    }
-  }
-
-  audioBtn?.addEventListener('click', toggleAudio);
-  mobileAudioBtn?.addEventListener('click', toggleAudio);
 
   // Mobile Menu Drawer Toggle
   const mobileToggle = document.getElementById('mobile-nav-toggle');
