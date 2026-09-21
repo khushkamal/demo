@@ -15,15 +15,14 @@ gsap.registerPlugin(ScrollTrigger);
 // Application State
 const appState = {
   heroScene: null,
-  panoramaViewer: null,
   activeLenis: null,
   isAudioPlaying: false,
   galleryIndex: 0,
   galleryImages: [
-    { src: '/images/gallery-1.jpg', caption: 'Sandstone colonnade in morning light (Sample image)' },
-    { src: '/images/gallery-2.jpg', caption: 'Jaali screen pattern and shadow (Sample image)' },
-    { src: '/images/gallery-3.jpg', caption: 'Copper soaking tub with valley view (Sample image)' },
-    { src: '/images/gallery-4.jpg', caption: 'Starlit courtyard with brass lanterns (Sample image)' }
+    { src: '/images/gallery-pool.jpg', caption: 'Stepwell swimming pool shaded by native trees (Sample image)' },
+    { src: '/images/gallery-room.jpg', caption: 'Suite interior with linen and wooden louvers (Sample image)' },
+    { src: '/images/gallery-firepit.jpg', caption: 'Open fire pit under starlight (Sample image)' },
+    { src: '/images/gallery-hills.jpg', caption: 'Aravalli ridges and granite boulder scenery (Sample image)' }
   ],
   mapPoints: {
     retreat: {
@@ -31,15 +30,15 @@ const appState = {
       text: 'Secluded valley setting in the Pali district. Elevation ~520 m MSL (Sample). Surrounding acacia forests and granite hills.'
     },
     ranakpur: {
-      title: 'Ranakpur Jain Temples',
-      text: '15th-century marble temple complex with 1,444 uniquely carved pillars. ~18 km, 25 minutes drive (Sample).'
+      title: 'Ranakpur Temples',
+      text: '15th-century temple complex with 1,444 sculptured columns. ~18 km, 25 minutes drive (Sample).'
     },
     jawai: {
-      title: 'Jawai Leopard Monoliths',
-      text: 'Pre-Cambrian granite hills where leopards roam alongside Rabari pastoral settlements. ~24 km, 35 minutes drive (Sample).'
+      title: 'Jawai Leopards',
+      text: 'Granite hills where leopards roam alongside Rabari pastoral settlements. ~24 km, 35 minutes drive (Sample).'
     },
     dam: {
-      title: 'Jawai Bandh Wetlands',
+      title: 'Jawai Dam Wetlands',
       text: 'Expansive water reservoir hosting flamingos, cranes, and migratory water birds. ~28 km, 40 minutes drive (Sample).'
     },
     udaipur: {
@@ -138,7 +137,7 @@ function setupHero() {
       const checkin = checkinInput?.value;
       const checkout = checkoutInput?.value;
       const guests = document.getElementById('hero-guests')?.value || '2 Guests';
-      const suite = document.getElementById('hero-suite')?.value || 'Aravalli Marble Suite';
+      const suite = document.getElementById('hero-suite')?.value || 'Aravalli Forest Suite';
 
       if (!checkin || !checkout) {
         if (bookingError) {
@@ -205,7 +204,7 @@ function setupNavbar() {
   }
 
   // ScrollSpy for Nav Links
-  const sections = ['suites', 'experiences', 'dining', 'gallery', 'location', 'enquiry'];
+  const sections = ['story', 'suites', 'timeline', 'dining', 'experiences', 'gallery', 'location'];
   sections.forEach((id) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -298,167 +297,7 @@ function closeModal(modalEl) {
   if (appState.heroScene) appState.heroScene.resume();
 }
 
-// 5. Setup Stay Estimator
-function setupEstimator() {
-  const suiteRadios = document.querySelectorAll('input[name="est-suite"]');
-  const nightsSlider = document.getElementById('est-nights-slider');
-  const nightsCount = document.getElementById('est-nights-count');
-  const guestsSelect = document.getElementById('est-guests-select');
-  const addonChecks = document.querySelectorAll('.est-addon-check');
-
-  const summarySuiteTitle = document.getElementById('summary-suite-title');
-  const summaryMetaLine = document.getElementById('summary-meta-line');
-  const summaryLineItems = document.getElementById('summary-line-items');
-  const subtotalVal = document.getElementById('est-subtotal-val');
-  const gstVal = document.getElementById('est-gst-val');
-  const totalVal = document.getElementById('est-total-val');
-  const proceedBtn = document.getElementById('est-proceed-btn');
-
-  function calculate() {
-    let selectedSuiteRadio = document.querySelector('input[name="est-suite"]:checked');
-    if (!selectedSuiteRadio && suiteRadios.length > 0) {
-      selectedSuiteRadio = suiteRadios[0];
-      selectedSuiteRadio.checked = true;
-    }
-
-    const suiteRate = parseInt(selectedSuiteRadio?.getAttribute('data-rate') || '38000', 10);
-    const suiteName = selectedSuiteRadio?.getAttribute('data-name') || 'Aravalli Marble Suite';
-    const nights = parseInt(nightsSlider?.value || '3', 10);
-    const guests = guestsSelect?.value || '2';
-
-    if (nightsCount) nightsCount.textContent = nights;
-    if (summarySuiteTitle) summarySuiteTitle.textContent = suiteName;
-    if (summaryMetaLine) summaryMetaLine.textContent = `${nights} ${nights === 1 ? 'Night' : 'Nights'} \u00B7 ${guests} ${guests === '1' ? 'Guest' : 'Guests'}`;
-
-    // Update active radio border styling
-    document.querySelectorAll('.est-radio-item').forEach((item) => {
-      const radio = item.querySelector('input[type="radio"]');
-      item.classList.toggle('active', !!radio?.checked);
-    });
-
-    const roomTotal = suiteRate * nights;
-    let addonsTotal = 0;
-    let lineItemsHtml = `
-      <div class="summary-row">
-        <span>${nights} ${nights === 1 ? 'Night' : 'Nights'} Accommodation</span>
-        <span>\u20B9${roomTotal.toLocaleString('en-IN')}</span>
-      </div>
-    `;
-
-    addonChecks.forEach((chk) => {
-      if (chk.checked) {
-        const cost = parseInt(chk.getAttribute('data-cost') || '0', 10);
-        const name = chk.getAttribute('data-name') || '';
-        addonsTotal += cost;
-        lineItemsHtml += `
-          <div class="summary-row">
-            <span>${name}</span>
-            <span>\u20B9${cost.toLocaleString('en-IN')}</span>
-          </div>
-        `;
-      }
-    });
-
-    if (summaryLineItems) summaryLineItems.innerHTML = lineItemsHtml;
-
-    const subtotal = roomTotal + addonsTotal;
-    const gst = Math.round(subtotal * 0.18);
-    const grandTotal = subtotal + gst;
-
-    if (subtotalVal) subtotalVal.textContent = `\u20B9${subtotal.toLocaleString('en-IN')}`;
-    if (gstVal) gstVal.textContent = `\u20B9${gst.toLocaleString('en-IN')}`;
-    if (totalVal) totalVal.textContent = `\u20B9${grandTotal.toLocaleString('en-IN')}`;
-  }
-
-  suiteRadios.forEach((r) => r.addEventListener('change', calculate));
-  nightsSlider?.addEventListener('input', calculate);
-  guestsSelect?.addEventListener('change', calculate);
-  addonChecks.forEach((c) => c.addEventListener('change', calculate));
-
-  proceedBtn?.addEventListener('click', () => {
-    const selectedSuiteRadio = document.querySelector('input[name="est-suite"]:checked');
-    const suiteName = selectedSuiteRadio?.getAttribute('data-name') || 'Aravalli Marble Suite';
-    const nights = parseInt(nightsSlider?.value || '3', 10);
-    const guests = guestsSelect?.value || '2';
-
-    // Calculate dates based on nights
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const checkinStr = tomorrow.toISOString().split('T')[0];
-
-    const checkoutDate = new Date(tomorrow);
-    checkoutDate.setDate(checkoutDate.getDate() + nights);
-    const checkoutStr = checkoutDate.toISOString().split('T')[0];
-
-    openEnquiryModal({
-      checkin: checkinStr,
-      checkout: checkoutStr,
-      guests: guests === '1' ? '1' : guests === '2' ? '2' : guests === '3' ? '3' : '4+',
-      suite: suiteName
-    });
-  });
-
-  calculate();
-}
-
-// 6. Setup 360° Panorama Viewer Modal (Dynamic Three.js import)
-function setupPanoramaViewer() {
-  const modal = document.getElementById('panorama-modal');
-  const closeBtn = document.getElementById('panorama-close-btn');
-  const container = document.getElementById('panorama-viewer-container');
-  const title = document.getElementById('panorama-title');
-  const viewBtns = document.querySelectorAll('.btn-open-360');
-
-  async function openViewer(suiteId) {
-    const suiteNames = {
-      marble: 'Aravalli Marble Suite',
-      tent: 'Jawai Leopard Pavilion',
-      rabari: 'Rabari Royal Villa'
-    };
-
-    if (title) {
-      title.innerHTML = `${suiteNames[suiteId] || 'Suite'} &middot; 360&deg; View`;
-    }
-
-    openModal(modal);
-
-    if (container) {
-      try {
-        const { PanoramaViewer } = await import('./scenes/panoramaViewer.js');
-        if (appState.panoramaViewer) {
-          appState.panoramaViewer.dispose();
-        }
-        appState.panoramaViewer = new PanoramaViewer(container, suiteId);
-      } catch (err) {
-        console.warn('Failed to load 360 panorama viewer:', err);
-      }
-    }
-  }
-
-  function closeViewer() {
-    closeModal(modal);
-    if (appState.panoramaViewer) {
-      appState.panoramaViewer.dispose();
-      appState.panoramaViewer = null;
-    }
-  }
-
-  viewBtns.forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const suiteId = btn.getAttribute('data-suite') || 'marble';
-      openViewer(suiteId);
-    });
-  });
-
-  closeBtn?.addEventListener('click', closeViewer);
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) closeViewer();
-  });
-}
-
-// 7. Setup Gallery Lightbox
+// 5. Setup Gallery Lightbox
 function setupGallery() {
   const modal = document.getElementById('gallery-lightbox');
   const closeBtn = document.getElementById('lightbox-close');
@@ -499,7 +338,7 @@ function setupGallery() {
   });
 }
 
-// 8. Setup Location Waypoints
+// 6. Setup Location Waypoints
 function setupLocation() {
   const chips = document.querySelectorAll('.map-chip');
   const pins = document.querySelectorAll('.map-marker-pin');
@@ -526,7 +365,7 @@ function setupLocation() {
   });
 }
 
-// 9. Setup Enquiry Modal & Form Handling
+// 7. Setup Enquiry Modals & Forms
 function openEnquiryModal(params = {}) {
   const modal = document.getElementById('enquiry-modal');
   const formView = document.getElementById('enquiry-form-view');
@@ -564,31 +403,8 @@ function openEnquiryModal(params = {}) {
   openModal(modal);
 }
 
-function setupEnquiryForm() {
-  const modal = document.getElementById('enquiry-modal');
-  const closeBtn = document.getElementById('enquiry-modal-close');
-  const successCloseBtn = document.getElementById('success-close-btn');
-  const form = document.getElementById('enquiry-form');
-  const formView = document.getElementById('enquiry-form-view');
-  const successView = document.getElementById('enquiry-success-view');
-
-  const nameInput = document.getElementById('guest-name');
-  const emailInput = document.getElementById('guest-email');
-  const checkinInput = document.getElementById('modal-checkin');
-  const checkoutInput = document.getElementById('modal-checkout');
-  const suiteSelect = document.getElementById('modal-suite');
-  const guestsSelect = document.getElementById('modal-guests');
-
-  const nameError = document.getElementById('name-error');
-  const emailError = document.getElementById('email-error');
-  const datesError = document.getElementById('dates-error');
-
-  const receiptRef = document.getElementById('receipt-ref');
-  const receiptSuite = document.getElementById('receipt-suite');
-  const receiptGuests = document.getElementById('receipt-guests');
-  const receiptDates = document.getElementById('receipt-dates');
-
-  // Trigger buttons across page
+function setupEnquiryForms() {
+  // Modal triggers
   document.querySelectorAll('.open-enquiry-modal-btn').forEach((btn) => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
@@ -597,83 +413,140 @@ function setupEnquiryForm() {
     });
   });
 
+  // Setup Popup Modal Form
+  const modal = document.getElementById('enquiry-modal');
+  const closeBtn = document.getElementById('enquiry-modal-close');
+  const successCloseBtn = document.getElementById('success-close-btn');
+  const modalForm = document.getElementById('enquiry-form');
+  const modalFormView = document.getElementById('enquiry-form-view');
+  const modalSuccessView = document.getElementById('enquiry-success-view');
+
   closeBtn?.addEventListener('click', () => closeModal(modal));
   successCloseBtn?.addEventListener('click', () => closeModal(modal));
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) closeModal(modal);
   });
 
-  // Checkin change updates checkout min
-  checkinInput?.addEventListener('change', () => {
-    if (checkinInput.value) {
-      const nextDay = new Date(checkinInput.value);
-      nextDay.setDate(nextDay.getDate() + 1);
-      checkoutInput.min = nextDay.toISOString().split('T')[0];
-      if (new Date(checkoutInput.value) <= new Date(checkinInput.value)) {
-        checkoutInput.value = nextDay.toISOString().split('T')[0];
-      }
-    }
-  });
-
-  form?.addEventListener('submit', (e) => {
+  modalForm?.addEventListener('submit', (e) => {
     e.preventDefault();
+    const nameInput = document.getElementById('guest-name');
+    const emailInput = document.getElementById('guest-email');
+    const checkinInput = document.getElementById('modal-checkin');
+    const checkoutInput = document.getElementById('modal-checkout');
+    const suiteSelect = document.getElementById('modal-suite');
+    const guestsSelect = document.getElementById('modal-guests');
+
+    const nameError = document.getElementById('name-error');
+    const emailError = document.getElementById('email-error');
+    const datesError = document.getElementById('dates-error');
+
     let valid = true;
-
-    // Validate Name
     if (!nameInput?.value.trim()) {
-      if (nameError) {
-        nameError.textContent = 'Please enter your full name.';
-        nameError.classList.add('visible');
-      }
+      if (nameError) { nameError.textContent = 'Please enter your full name.'; nameError.classList.add('visible'); }
       valid = false;
-    } else if (nameError) {
-      nameError.classList.remove('visible');
-    }
+    } else if (nameError) { nameError.classList.remove('visible'); }
 
-    // Validate Email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailInput?.value.trim() || !emailRegex.test(emailInput.value.trim())) {
-      if (emailError) {
-        emailError.textContent = 'Please enter a valid email address.';
-        emailError.classList.add('visible');
-      }
+      if (emailError) { emailError.textContent = 'Please enter a valid email address.'; emailError.classList.add('visible'); }
       valid = false;
-    } else if (emailError) {
-      emailError.classList.remove('visible');
-    }
+    } else if (emailError) { emailError.classList.remove('visible'); }
 
-    // Validate Dates
     if (!checkinInput?.value || !checkoutInput?.value) {
-      if (datesError) {
-        datesError.textContent = 'Please select both check-in and check-out dates.';
-        datesError.classList.add('visible');
-      }
+      if (datesError) { datesError.textContent = 'Please select both check-in and check-out dates.'; datesError.classList.add('visible'); }
       valid = false;
     } else if (new Date(checkoutInput.value) <= new Date(checkinInput.value)) {
-      if (datesError) {
-        datesError.textContent = 'Check-out date must be after check-in date.';
-        datesError.classList.add('visible');
-      }
+      if (datesError) { datesError.textContent = 'Check-out date must be after check-in date.'; datesError.classList.add('visible'); }
       valid = false;
-    } else if (datesError) {
-      datesError.classList.remove('visible');
-    }
+    } else if (datesError) { datesError.classList.remove('visible'); }
 
     if (!valid) return;
 
-    // Populate Receipt
     const randomCode = Math.floor(1000 + Math.random() * 9000);
-    if (receiptRef) receiptRef.textContent = `#ARV-DEMO-${randomCode}`;
-    if (receiptSuite) receiptSuite.textContent = suiteSelect?.value || 'Aravalli Marble Suite';
-    if (receiptGuests) receiptGuests.textContent = `${guestsSelect?.value} ${guestsSelect?.value === '1' ? 'Guest' : 'Guests'}`;
-    if (receiptDates) receiptDates.textContent = `${checkinInput?.value} to ${checkoutInput?.value}`;
+    document.getElementById('receipt-ref').textContent = `#ARV-DEMO-${randomCode}`;
+    document.getElementById('receipt-suite').textContent = suiteSelect?.value || 'Aravalli Forest Suite';
+    document.getElementById('receipt-guests').textContent = `${guestsSelect?.value} ${guestsSelect?.value === '1' ? 'Guest' : 'Guests'}`;
+    document.getElementById('receipt-dates').textContent = `${checkinInput?.value} to ${checkoutInput?.value}`;
 
-    if (formView) formView.style.display = 'none';
-    if (successView) successView.style.display = 'block';
+    if (modalFormView) modalFormView.style.display = 'none';
+    if (modalSuccessView) modalSuccessView.style.display = 'block';
+  });
+
+  // Setup Inline Section Form
+  const inlineForm = document.getElementById('inline-enquiry-form');
+  const inlineSuccessBox = document.getElementById('inline-success-box');
+  const inlineCheckin = document.getElementById('inline-checkin');
+  const inlineCheckout = document.getElementById('inline-checkout');
+
+  if (inlineCheckin && inlineCheckout) {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfter = new Date(tomorrow);
+    dayAfter.setDate(dayAfter.getDate() + 3);
+
+    inlineCheckin.value = tomorrow.toISOString().split('T')[0];
+    inlineCheckin.min = today.toISOString().split('T')[0];
+    inlineCheckout.value = dayAfter.toISOString().split('T')[0];
+    inlineCheckout.min = tomorrow.toISOString().split('T')[0];
+
+    inlineCheckin.addEventListener('change', () => {
+      if (inlineCheckin.value) {
+        const nextDay = new Date(inlineCheckin.value);
+        nextDay.setDate(nextDay.getDate() + 1);
+        inlineCheckout.min = nextDay.toISOString().split('T')[0];
+        if (new Date(inlineCheckout.value) <= new Date(inlineCheckin.value)) {
+          inlineCheckout.value = nextDay.toISOString().split('T')[0];
+        }
+      }
+    });
+  }
+
+  inlineForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nameInput = document.getElementById('inline-name');
+    const emailInput = document.getElementById('inline-email');
+    const suiteSelect = document.getElementById('inline-suite');
+    const guestsSelect = document.getElementById('inline-guests');
+
+    const nameError = document.getElementById('inline-name-error');
+    const emailError = document.getElementById('inline-email-error');
+    const datesError = document.getElementById('inline-dates-error');
+
+    let valid = true;
+    if (!nameInput?.value.trim()) {
+      if (nameError) { nameError.textContent = 'Please enter your full name.'; nameError.classList.add('visible'); }
+      valid = false;
+    } else if (nameError) { nameError.classList.remove('visible'); }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailInput?.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+      if (emailError) { emailError.textContent = 'Please enter a valid email address.'; emailError.classList.add('visible'); }
+      valid = false;
+    } else if (emailError) { emailError.classList.remove('visible'); }
+
+    if (!inlineCheckin?.value || !inlineCheckout?.value) {
+      if (datesError) { datesError.textContent = 'Please select both check-in and check-out dates.'; datesError.classList.add('visible'); }
+      valid = false;
+    } else if (new Date(inlineCheckout.value) <= new Date(inlineCheckin.value)) {
+      if (datesError) { datesError.textContent = 'Check-out date must be after check-in date.'; datesError.classList.add('visible'); }
+      valid = false;
+    } else if (datesError) { datesError.classList.remove('visible'); }
+
+    if (!valid) return;
+
+    const randomCode = Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('inline-receipt-ref').textContent = `#ARV-DEMO-${randomCode}`;
+    document.getElementById('inline-receipt-suite').textContent = suiteSelect?.value || 'Aravalli Forest Suite';
+    document.getElementById('inline-receipt-guests').textContent = `${guestsSelect?.value} ${guestsSelect?.value === '1' ? 'Guest' : 'Guests'}`;
+    document.getElementById('inline-receipt-dates').textContent = `${inlineCheckin?.value} to ${inlineCheckout?.value}`;
+
+    if (inlineForm) inlineForm.style.display = 'none';
+    if (inlineSuccessBox) inlineSuccessBox.style.display = 'block';
   });
 }
 
-// 10. Global Escape Key Listener for Modals
+// 8. Global Escape Key Listener for Modals
 function setupGlobalKeyEvents() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -697,10 +570,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   setupHero();
   setupNavbar();
-  setupEstimator();
-  setupPanoramaViewer();
   setupGallery();
   setupLocation();
-  setupEnquiryForm();
+  setupEnquiryForms();
   setupGlobalKeyEvents();
 });
