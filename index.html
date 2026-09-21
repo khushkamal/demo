@@ -66,6 +66,9 @@
     </div>
   </header>
 
+  <!-- Mobile Backdrop Overlay -->
+  <div id="mobile-nav-backdrop" class="mobile-nav-backdrop" aria-hidden="true"></div>
+
   <!-- Mobile Drawer Menu -->
   <div id="mobile-nav-drawer" class="mobile-nav-drawer" role="dialog" aria-hidden="true" aria-label="Mobile Navigation Menu">
     <div class="mobile-drawer-header">
@@ -137,7 +140,7 @@
           </button>
         </div>
         <div class="hero-dock-hint" id="hero-dock-hint">
-          <span class="pulse-indicator"></span> Move mouse or scroll to fly through 3D landscape
+          <span class="pulse-indicator"></span> Move mouse or scroll to pan 3D sanctuary
         </div>
       </div>
 
@@ -175,6 +178,14 @@
           </div>
         </div>
       </div>
+
+      <!-- Hero Scroll Down Indicator -->
+      <a href="#story" class="hero-scroll-indicator" aria-label="Scroll to explore the retreat story">
+        <div class="scroll-mouse-icon">
+          <div class="scroll-wheel"></div>
+        </div>
+        <span class="scroll-hint-label">Discover Sanctuary</span>
+      </a>
     </section>
 
     <!-- 2. THE STORY / PHILOSOPHY (Asymmetric Editorial Layout) -->
@@ -421,31 +432,6 @@
               <span>Drag to orbit 360° • Scroll / Pinch to Zoom</span>
             </div>
 
-            <!-- Interactive Hotspot Pins overlaid in 3D studio -->
-            <div class="room-hotspot" style="top: 38%; left: 24%;" data-title="Handcrafted Jaali Lattice" data-desc="Intricately carved sandstone screens filtering desert sunlight into gentle geometric patterns.">
-              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
-              <div class="hotspot-tooltip">
-                <strong>Carved Jaali Screen</strong>
-                <p>Filters desert light into soothing geometric shadows.</p>
-              </div>
-            </div>
-
-            <div class="room-hotspot" style="top: 52%; left: 52%;" data-title="Four-Poster Sheesham Bed" data-desc="Hand-hewn Sheesham timber frame with organic Indian cotton linens and brass finials.">
-              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
-              <div class="hotspot-tooltip">
-                <strong>Royal Canopy Bed</strong>
-                <p>Four-poster Sheesham timber with organic Marwar linens.</p>
-              </div>
-            </div>
-
-            <div class="room-hotspot" style="top: 28%; left: 74%;" data-title="Brass Lantern & Chhatri Finial" data-desc="Mewari hand-beaten brass lantern casting warm amber starlight glows at dusk.">
-              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
-              <div class="hotspot-tooltip">
-                <strong>Handcrafted Brass Lantern</strong>
-                <p>Hand-hammered brass casting warm evening ambiance.</p>
-              </div>
-            </div>
-
             <!-- Suite Real-time Dynamic Info HUD -->
             <div class="suite-3d-specs-overlay" id="suite-specs-hud">
               <div class="specs-header">
@@ -511,6 +497,15 @@
           <p class="section-lead-paragraph">
             Nestled between the dense teak forests of the Aravalli hills and the pre-Cambrian granite boulders of Jawai. Click any destination on the interactive route to preview distances and travel profiles.
           </p>
+        </div>
+
+        <!-- Quick Destination Selector Pills (Mobile & Tablet Friendly) -->
+        <div class="map-waypoint-selector-bar">
+          <button class="map-chip-btn active" data-target-id="retreat">✦ Aravalli Retreat</button>
+          <button class="map-chip-btn" data-target-id="ranakpur">Ranakpur Temples</button>
+          <button class="map-chip-btn" data-target-id="jawai">Jawai Leopards</button>
+          <button class="map-chip-btn" data-target-id="dam">Jawai Dam</button>
+          <button class="map-chip-btn" data-target-id="udaipur">Udaipur Gateway</button>
         </div>
 
         <div class="interactive-corridor-map-card">
@@ -779,6 +774,20 @@
               </div>
             </div>
 
+            <!-- Guest Count Selector -->
+            <div class="planner-unit-group">
+              <div class="unit-header-flex">
+                <label class="unit-label">Number of Guests</label>
+                <span class="unit-val-pill" id="planner-guests-badge">2 Guests</span>
+              </div>
+              <div class="guest-pills-row">
+                <button class="guest-pill" data-guests="1">1 Guest</button>
+                <button class="guest-pill active" data-guests="2">2 Guests</button>
+                <button class="guest-pill" data-guests="3">3 Guests</button>
+                <button class="guest-pill" data-guests="4">4+ Guests</button>
+              </div>
+            </div>
+
             <!-- Sanctuary Selection -->
             <div class="planner-unit-group">
               <label class="unit-label">Select Sanctuary</label>
@@ -922,19 +931,19 @@
         </div>
 
         <div class="gallery-editorial-grid">
-          <div class="gallery-tile-item span-7" data-caption="Sandstone courtyard colonnade at golden sunrise">
+          <div class="gallery-tile-item span-7" data-index="0" data-caption="Sandstone courtyard colonnade at golden sunrise">
             <img src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1600&q=85" alt="Sandstone courtyard colonnade at golden sunrise" class="gallery-tile-photo" loading="lazy" />
             <div class="gallery-tile-caption">Courtyard Colonnade · Sunrise</div>
           </div>
-          <div class="gallery-tile-item span-5" data-caption="Carved white marble details and shadowplay">
+          <div class="gallery-tile-item span-5" data-index="1" data-caption="Carved white marble details and shadowplay">
             <img src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?auto=format&fit=crop&w=1200&q=85" alt="Carved white marble details and shadowplay" class="gallery-tile-photo" loading="lazy" />
             <div class="gallery-tile-caption">Marble Carvings · Makrana Stone</div>
           </div>
-          <div class="gallery-tile-item span-4" data-caption="Minimalist luxury suite interior with natural linen">
+          <div class="gallery-tile-item span-4" data-index="2" data-caption="Minimalist luxury suite interior with natural linen">
             <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85" alt="Minimalist luxury suite interior with natural linen" class="gallery-tile-photo" loading="lazy" />
             <div class="gallery-tile-caption">Suite Interior · Sheesham Wood</div>
           </div>
-          <div class="gallery-tile-item span-8" data-caption="Twilight candlelit reflection over the stepwell">
+          <div class="gallery-tile-item span-8" data-index="3" data-caption="Twilight candlelit reflection over the stepwell">
             <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=85" alt="Twilight candlelit reflection over the stepwell" class="gallery-tile-photo" loading="lazy" />
             <div class="gallery-tile-caption">Stepwell Courtyard · Twilight Reflection</div>
           </div>
@@ -1103,12 +1112,19 @@
     </div>
   </footer>
 
-  <!-- Lightbox Dialog -->
+  <!-- Complete Gallery Lightbox Dialog -->
   <div id="gallery-lightbox" class="gallery-lightbox-modal" role="dialog" aria-hidden="true" aria-label="Image Lightbox">
     <div class="lightbox-dialog-frame">
       <button id="lightbox-close" class="lightbox-close-trigger" aria-label="Close Lightbox">&times;</button>
-      <img id="lightbox-img" class="lightbox-dialog-photo" src="" alt="Enlarged view" />
-      <div id="lightbox-caption" class="lightbox-dialog-caption"></div>
+      <button id="lightbox-prev" class="lightbox-nav-btn prev" aria-label="Previous Image">&#10094;</button>
+      <button id="lightbox-next" class="lightbox-nav-btn next" aria-label="Next Image">&#10095;</button>
+      <div class="lightbox-photo-wrapper">
+        <img id="lightbox-img" class="lightbox-dialog-photo" src="" alt="Enlarged view" />
+      </div>
+      <div class="lightbox-footer-bar">
+        <div id="lightbox-caption" class="lightbox-dialog-caption"></div>
+        <div id="lightbox-counter" class="lightbox-counter-badge">1 / 4</div>
+      </div>
     </div>
   </div>
 
@@ -1122,18 +1138,25 @@
       </div>
 
       <div id="enquiry-form-view">
-        <span class="editorial-kicker">Reservation Enquiry</span>
-        <h3 style="font-size: 1.95rem; margin-top: 6px; margin-bottom: 24px;">Request a Stay at Aravalli Retreat</h3>
+        <div class="enquiry-modal-header-row">
+          <div>
+            <span class="editorial-kicker">Reservation Enquiry</span>
+            <h3 style="font-size: 1.85rem; margin-top: 4px; margin-bottom: 6px;">Request a Sanctuary Stay</h3>
+          </div>
+          <span id="modal-nights-badge" class="modal-nights-badge">4 Nights Stay</span>
+        </div>
 
         <form id="enquiry-form" novalidate>
           <div class="form-field-unit">
             <label for="guest-name">Full Name *</label>
             <input type="text" id="guest-name" class="editorial-field-input" placeholder="e.g. Gayatri Devi" required />
+            <div id="name-error" class="field-error-msg"></div>
           </div>
 
           <div class="form-field-unit">
             <label for="guest-email">Email Address *</label>
             <input type="email" id="guest-email" class="editorial-field-input" placeholder="e.g. guest@example.com" required />
+            <div id="email-error" class="field-error-msg"></div>
           </div>
 
           <div class="form-split-columns">
@@ -1146,6 +1169,7 @@
               <input type="date" id="checkout-date" class="editorial-field-input" required />
             </div>
           </div>
+          <div id="dates-error" class="field-error-msg" style="margin-top: -10px; margin-bottom: 12px;"></div>
 
           <div class="form-split-columns">
             <div class="form-field-unit">
@@ -1172,7 +1196,7 @@
             <textarea id="special-notes" class="editorial-field-textarea" rows="3" placeholder="Please let us know your preferences for leopard safaris, temple dawn visits, or dietary needs..."></textarea>
           </div>
 
-          <button type="submit" class="btn-editorial btn-terracotta" style="width: 100%; margin-top: 10px;">
+          <button type="submit" id="enquiry-submit-btn" class="btn-editorial btn-terracotta" style="width: 100%; margin-top: 10px;">
             Submit Demo Enquiry
           </button>
         </form>
@@ -1180,20 +1204,47 @@
 
       <!-- Demo Confirmation Screen -->
       <div id="enquiry-confirmation-view" class="demo-success-confirmation">
-        <span class="editorial-kicker">Demo Simulation</span>
-        <h3 style="font-size: 1.85rem; margin: 12px 0 16px; color: var(--color-text-main);">Enquiry Received</h3>
-        <p style="margin-bottom: 24px; font-size: 0.95rem;">
-          Thank you for exploring the Aravalli Retreat prototype. Your demo enquiry has been registered in the demonstration log.
+        <div class="confirmation-check-badge">✓</div>
+        <span class="editorial-kicker">Demo Simulation Success</span>
+        <h3 style="font-size: 1.85rem; margin: 10px 0 12px; color: var(--color-text-main);">Enquiry Registered</h3>
+        <p style="margin-bottom: 20px; font-size: 0.92rem; color: var(--color-text-muted);">
+          Thank you for exploring this prototype. Your personalized demonstration proposal has been safely logged.
         </p>
-        <div style="background: var(--bg-secondary); padding: 16px; margin-bottom: 28px; font-size: 0.88rem; color: var(--color-text-main); border: 1px solid var(--color-border);">
-          <strong>Demo Reference Number:</strong> #ARV-DEMO-<span id="demo-ref-number">8492</span>
+        
+        <div class="demo-receipt-summary-box">
+          <div class="receipt-row">
+            <span>Reference Code:</span>
+            <strong id="demo-ref-full">#ARV-DEMO-8492</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Sanctuary:</span>
+            <strong id="receipt-suite-val">Aravalli Marble Suite</strong>
+          </div>
+          <div class="receipt-row">
+            <span>Stay Duration:</span>
+            <strong id="receipt-dates-val">3 Nights · 2 Guests</strong>
+          </div>
+          <div class="receipt-actions">
+            <button id="copy-ref-btn" class="btn-copy-ref" title="Copy Reference Code">
+              <span>📋 Copy Reference Code</span>
+            </button>
+          </div>
+          <div id="copy-toast" class="copy-toast-msg">Copied code to clipboard!</div>
         </div>
-        <button id="confirmation-return-btn" class="btn-editorial" style="width: 100%;">
+
+        <button id="confirmation-return-btn" class="btn-editorial btn-terracotta" style="width: 100%;">
           Return to Retreat
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top-btn" class="back-to-top-btn" aria-label="Return to top of page" title="Return to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </button>
 
   <script type="module" src="/src/main.js"></script>
 </body>

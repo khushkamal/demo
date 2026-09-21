@@ -130,13 +130,15 @@ const appState = {
   }
 };
 
+let activeLenis = null;
+
 // 1. Initialize Lenis Smooth Scrolling
 function initSmoothScroll() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return null;
 
   const lenis = new Lenis({
-    duration: 1.3,
+    duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     gestureOrientation: 'vertical',
@@ -152,6 +154,7 @@ function initSmoothScroll() {
   });
   gsap.ticker.lagSmoothing(0);
 
+  activeLenis = lenis;
   return lenis;
 }
 
@@ -170,22 +173,96 @@ function setupCursorGlow() {
   }, { passive: true });
 }
 
-// 3. Setup Navbar Scroll State & Parallax
+// 3. Setup Navbar Scroll State, ScrollSpy & Parallax
 function setupScrollParallax() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
-
   const navbar = document.querySelector('.editorial-navbar');
+  const navLinks = document.querySelectorAll('.nav-item-link');
+  const backToTopBtn = document.getElementById('back-to-top-btn');
+
+  // Sticky Navbar Blur & Shadow on scroll
   ScrollTrigger.create({
-    start: 'top -60',
+    start: 'top -50',
     onUpdate: (self) => {
       if (self.progress > 0) {
-        navbar.classList.add('scrolled');
+        navbar?.classList.add('scrolled');
       } else {
-        navbar.classList.remove('scrolled');
+        navbar?.classList.remove('scrolled');
       }
     }
   });
+
+  // Back to top button visibility trigger
+  ScrollTrigger.create({
+    start: 'top -400',
+    onUpdate: (self) => {
+      if (backToTopBtn) {
+        backToTopBtn.classList.toggle('visible', self.progress > 0);
+      }
+    }
+  });
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (activeLenis) {
+        activeLenis.scrollTo(0, { duration: 1.4 });
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  }
+
+  // ScrollSpy: Highlight active section in navigation
+  const sections = [
+    { id: 'story', link: 'a[href="#story"]' },
+    { id: 'suites', link: 'a[href="#suites"]' },
+    { id: 'suite-3d-explorer', link: 'a[href="#suite-3d-explorer"]' },
+    { id: 'corridor-map-section', link: 'a[href="#corridor-map-section"]' },
+    { id: 'experiences', link: 'a[href="#experiences"]' },
+    { id: 'journey-planner-section', link: 'a[href="#journey-planner-section"]' },
+    { id: 'gallery', link: 'a[href="#gallery"]' },
+    { id: 'location', link: 'a[href="#location"]' }
+  ];
+
+  sections.forEach(({ id, link }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 45%',
+      end: 'bottom 45%',
+      onEnter: () => setActiveNavLink(link),
+      onEnterBack: () => setActiveNavLink(link)
+    });
+  });
+
+  function setActiveNavLink(linkSelector) {
+    navLinks.forEach(item => item.classList.remove('active'));
+    const targetLink = document.querySelector(`.editorial-navbar ${linkSelector}`);
+    if (targetLink) {
+      targetLink.classList.add('active');
+    }
+  }
+
+  // Hero scroll down indicator button
+  const heroScrollIndicator = document.querySelector('.hero-scroll-indicator');
+  if (heroScrollIndicator) {
+    heroScrollIndicator.addEventListener('click', (e) => {
+      e.preventDefault();
+      const storySec = document.getElementById('story');
+      if (storySec) {
+        if (activeLenis) {
+          activeLenis.scrollTo(storySec, { offset: -60, duration: 1.2 });
+        } else {
+          storySec.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
+  }
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) return;
 
   // Story primary photo parallax
   const storyPhoto = document.querySelector('.story-primary-photo');
@@ -338,9 +415,12 @@ function initRoomViewer() {
       const preset = btn.getAttribute('data-suite-preset');
       const explorer = document.getElementById('suite-3d-explorer');
       if (explorer) {
-        explorer.scrollIntoView({ behavior: 'smooth' });
+        if (activeLenis) {
+          activeLenis.scrollTo(explorer, { offset: -40, duration: 1.2 });
+        } else {
+          explorer.scrollIntoView({ behavior: 'smooth' });
+        }
       }
-      // Activate matching preset button
       presetBtns.forEach(b => {
         if (b.getAttribute('data-preset') === preset) {
           b.click();
@@ -375,12 +455,10 @@ function initRoomViewer() {
       if (appState.roomViewer) {
         appState.roomViewer.setLighting(roomNight);
       }
-      if (lightingBtn) {
-        lightingBtn.classList.toggle('active', roomNight);
-        lightingBtn.innerHTML = roomNight 
-          ? `<span class="hud-icon">🕯️</span> Evening Mood: On` 
-          : `<span class="hud-icon">☀️</span> Daylight`;
-      }
+      lightingBtn.classList.toggle('active', roomNight);
+      lightingBtn.innerHTML = roomNight 
+        ? `<span class="hud-icon">🕯️</span> Evening Mood: On` 
+        : `<span class="hud-icon">☀️</span> Daylight`;
     });
   }
 }
@@ -468,9 +546,10 @@ function setupAtmosphereToggle() {
   if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', handleAtmosphere);
 }
 
-// 8. Setup Interactive Corridor Map
+// 8. Setup Interactive Corridor Map & Selector Chips
 function setupCorridorMap() {
   const waypoints = document.querySelectorAll('.map-waypoint-node');
+  const chipBtns = document.querySelectorAll('.map-chip-btn');
   const kicker = document.getElementById('map-node-kicker');
   const title = document.getElementById('map-node-title');
   const desc = document.getElementById('map-node-desc');
@@ -480,26 +559,37 @@ function setupCorridorMap() {
   const terrain = document.getElementById('map-metric-terrain');
   const highlights = document.getElementById('map-node-highlights');
 
+  function selectWaypoint(id) {
+    waypoints.forEach(n => n.classList.toggle('active', n.getAttribute('data-id') === id));
+    chipBtns.forEach(c => c.classList.toggle('active', c.getAttribute('data-target-id') === id));
+
+    const data = appState.mapWaypoints[id];
+    if (!data) return;
+
+    if (kicker) kicker.textContent = data.kicker;
+    if (title) title.textContent = data.title;
+    if (desc) desc.textContent = data.desc;
+    if (dist) dist.textContent = data.dist;
+    if (time) time.textContent = data.time;
+    if (elev) elev.textContent = data.elev;
+    if (terrain) terrain.textContent = data.terrain;
+
+    if (highlights) {
+      highlights.innerHTML = data.highlights.map(h => `<div class="h-item">${h}</div>`).join('');
+    }
+  }
+
   waypoints.forEach(node => {
     node.addEventListener('click', () => {
-      waypoints.forEach(n => n.classList.remove('active'));
-      node.classList.add('active');
-
       const id = node.getAttribute('data-id');
-      const data = appState.mapWaypoints[id];
-      if (!data) return;
+      selectWaypoint(id);
+    });
+  });
 
-      if (kicker) kicker.textContent = data.kicker;
-      if (title) title.textContent = data.title;
-      if (desc) desc.textContent = data.desc;
-      if (dist) dist.textContent = data.dist;
-      if (time) time.textContent = data.time;
-      if (elev) elev.textContent = data.elev;
-      if (terrain) terrain.textContent = data.terrain;
-
-      if (highlights) {
-        highlights.innerHTML = data.highlights.map(h => `<div class="h-item">${h}</div>`).join('');
-      }
+  chipBtns.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const id = chip.getAttribute('data-target-id');
+      selectWaypoint(id);
     });
   });
 }
@@ -508,6 +598,8 @@ function setupCorridorMap() {
 function setupJourneyPlanner() {
   const nightsSlider = document.getElementById('planner-nights-slider');
   const nightsBadge = document.getElementById('planner-nights-badge');
+  const guestPills = document.querySelectorAll('.guest-pill');
+  const guestsBadge = document.getElementById('planner-guests-badge');
   const suiteRadios = document.querySelectorAll('input[name="planner-suite"]');
   const expChecks = document.querySelectorAll('.planner-exp-check');
   const currencyPills = document.querySelectorAll('.currency-pill');
@@ -521,6 +613,9 @@ function setupJourneyPlanner() {
   function calculateProposal() {
     const nights = parseInt(nightsSlider ? nightsSlider.value : 3, 10);
     if (nightsBadge) nightsBadge.textContent = `${nights} Nights`;
+
+    const guests = appState.guests || 2;
+    if (guestsBadge) guestsBadge.textContent = `${guests} ${guests === 1 ? 'Guest' : 'Guests'}`;
 
     // Selected Suite
     let selectedSuiteKey = 'marble';
@@ -559,7 +654,7 @@ function setupJourneyPlanner() {
       proposalSuite.textContent = `${suiteData.name} Journey`;
     }
     if (proposalNights) {
-      proposalNights.textContent = `${nights} Nights · 2 Guests · Bespoke Retreat`;
+      proposalNights.textContent = `${nights} Nights · ${guests} ${guests === 1 ? 'Guest' : 'Guests'} · Bespoke Retreat`;
     }
 
     if (itemsList) {
@@ -590,6 +685,7 @@ function setupJourneyPlanner() {
       bookBtn.onclick = (e) => {
         e.preventDefault();
         const suiteSelect = document.getElementById('suite-select');
+        const guestSelect = document.getElementById('guest-count');
         const specialNotes = document.getElementById('special-notes');
         const modal = document.getElementById('enquiry-modal');
 
@@ -602,9 +698,19 @@ function setupJourneyPlanner() {
           }
         }
 
+        if (guestSelect) {
+          const guestStr = guests >= 4 ? '4+' : String(guests);
+          for (let i = 0; i < guestSelect.options.length; i++) {
+            if (guestSelect.options[i].value === guestStr) {
+              guestSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+
         if (specialNotes) {
           const expNames = selectedExps.map(e => e.name).join(', ');
-          specialNotes.value = `Custom Itinerary: ${nights} Nights in ${suiteData.name}. Inclusions: ${expNames || 'Standard Stay'}. Estimated budget: ${totalDisplay.textContent}.`;
+          specialNotes.value = `Custom Itinerary Proposal: ${nights} Nights for ${guests} guests in ${suiteData.name}.\nInclusions: ${expNames || 'Standard Sanctuary Stay'}.\nEstimated Quote: ${totalDisplay.textContent}.`;
         }
 
         if (modal) {
@@ -618,6 +724,16 @@ function setupJourneyPlanner() {
   if (nightsSlider) nightsSlider.addEventListener('input', calculateProposal);
   suiteRadios.forEach(r => r.addEventListener('change', calculateProposal));
   expChecks.forEach(c => c.addEventListener('change', calculateProposal));
+
+  // Guest count selector
+  guestPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      guestPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      appState.guests = parseInt(pill.getAttribute('data-guests'), 10) || 2;
+      calculateProposal();
+    });
+  });
 
   // Currency switcher
   currencyPills.forEach(pill => {
@@ -633,47 +749,100 @@ function setupJourneyPlanner() {
   calculateProposal();
 }
 
-// 10. Setup Gallery Lightbox Modal
+// 10. Setup Gallery Lightbox Modal with Full Playlist Controls
 function setupGalleryLightbox() {
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
   const lightboxCaption = document.getElementById('lightbox-caption');
+  const lightboxCounter = document.getElementById('lightbox-counter');
   const closeBtn = document.getElementById('lightbox-close');
+  const prevBtn = document.getElementById('lightbox-prev');
+  const nextBtn = document.getElementById('lightbox-next');
 
   const galleryItems = document.querySelectorAll('.gallery-tile-item');
+  const imagesList = [];
 
-  galleryItems.forEach((item) => {
+  galleryItems.forEach((item, index) => {
+    const img = item.querySelector('img');
+    const caption = item.getAttribute('data-caption') || '';
+    if (img) {
+      imagesList.push({
+        src: img.src,
+        alt: img.alt || 'Aravalli Retreat',
+        caption: caption
+      });
+    }
+
     item.addEventListener('click', () => {
-      const img = item.querySelector('img');
-      const caption = item.getAttribute('data-caption');
-
-      if (img && lightboxImg) {
-        lightboxImg.src = img.src;
-        lightboxImg.alt = img.alt || 'Aravalli Retreat';
-      }
-      if (lightboxCaption && caption) {
-        lightboxCaption.textContent = caption;
-      }
-
-      lightbox.classList.add('active');
-      lightbox.setAttribute('aria-hidden', 'false');
+      openLightbox(index);
     });
   });
 
-  const closeLightbox = () => {
-    lightbox.classList.remove('active');
-    lightbox.setAttribute('aria-hidden', 'true');
-  };
+  let currentIndex = 0;
+
+  function openLightbox(index) {
+    if (!imagesList[index]) return;
+    currentIndex = index;
+    updateLightboxContent();
+    if (lightbox) {
+      lightbox.classList.add('active');
+      lightbox.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function updateLightboxContent() {
+    const current = imagesList[currentIndex];
+    if (!current) return;
+
+    if (lightboxImg) {
+      lightboxImg.src = current.src;
+      lightboxImg.alt = current.alt;
+    }
+    if (lightboxCaption) {
+      lightboxCaption.textContent = current.caption;
+    }
+    if (lightboxCounter) {
+      lightboxCounter.textContent = `${currentIndex + 1} / ${imagesList.length}`;
+    }
+  }
+
+  function nextImage() {
+    currentIndex = (currentIndex + 1) % imagesList.length;
+    updateLightboxContent();
+  }
+
+  function prevImage() {
+    currentIndex = (currentIndex - 1 + imagesList.length) % imagesList.length;
+    updateLightboxContent();
+  }
+
+  function closeLightbox() {
+    if (lightbox) {
+      lightbox.classList.remove('active');
+      lightbox.setAttribute('aria-hidden', 'true');
+    }
+  }
 
   if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  if (nextBtn) nextBtn.addEventListener('click', nextImage);
+  if (prevBtn) prevBtn.addEventListener('click', prevImage);
+
   if (lightbox) {
     lightbox.addEventListener('click', (e) => {
       if (e.target === lightbox) closeLightbox();
     });
   }
+
+  // Keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    if (!lightbox || !lightbox.classList.contains('active')) return;
+    if (e.key === 'ArrowRight') nextImage();
+    if (e.key === 'ArrowLeft') prevImage();
+    if (e.key === 'Escape') closeLightbox();
+  });
 }
 
-// 11. Setup Booking Enquiry Modal & Client-Side Validation
+// 11. Setup Booking Enquiry Modal & Client-Side Inline Validation
 function setupEnquiryModal() {
   const modal = document.getElementById('enquiry-modal');
   const closeBtn = document.getElementById('modal-close');
@@ -682,23 +851,60 @@ function setupEnquiryModal() {
   const confirmView = document.getElementById('enquiry-confirmation-view');
   const returnBtn = document.getElementById('confirmation-return-btn');
   const suiteSelect = document.getElementById('suite-select');
-  const refNumSpan = document.getElementById('demo-ref-number');
+  const guestSelect = document.getElementById('guest-count');
+  const refNumFull = document.getElementById('demo-ref-full');
+  const copyBtn = document.getElementById('copy-ref-btn');
+  const copyToast = document.getElementById('copy-toast');
+  const modalNightsBadge = document.getElementById('modal-nights-badge');
+  const receiptSuiteVal = document.getElementById('receipt-suite-val');
+  const receiptDatesVal = document.getElementById('receipt-dates-val');
+
+  const nameInput = document.getElementById('guest-name');
+  const emailInput = document.getElementById('guest-email');
+  const checkinInput = document.getElementById('checkin-date');
+  const checkoutInput = document.getElementById('checkout-date');
+
+  const nameError = document.getElementById('name-error');
+  const emailError = document.getElementById('email-error');
+  const datesError = document.getElementById('dates-error');
 
   const openButtons = document.querySelectorAll('.open-enquiry-modal-btn');
 
-  // Set default sample dates (+3 days from now)
-  const checkinInput = document.getElementById('checkin-date');
-  const checkoutInput = document.getElementById('checkout-date');
-  if (checkinInput && checkoutInput) {
-    const today = new Date();
+  // Set default sample dates (+3 days from now to +7 days)
+  const today = new Date();
+  const todayStr = today.toISOString().split('T')[0];
+  if (checkinInput) {
+    checkinInput.min = todayStr;
     const checkin = new Date(today);
     checkin.setDate(checkin.getDate() + 3);
+    checkinInput.value = checkin.toISOString().split('T')[0];
+  }
+  if (checkoutInput) {
     const checkout = new Date(today);
     checkout.setDate(checkout.getDate() + 7);
-
-    checkinInput.value = checkin.toISOString().split('T')[0];
     checkoutInput.value = checkout.toISOString().split('T')[0];
   }
+
+  function updateNightsBadge() {
+    if (!checkinInput || !checkoutInput) return;
+    const d1 = new Date(checkinInput.value);
+    const d2 = new Date(checkoutInput.value);
+    const diffDays = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+    
+    if (diffDays > 0) {
+      if (modalNightsBadge) modalNightsBadge.textContent = `${diffDays} Nights Stay`;
+      if (datesError) datesError.textContent = '';
+      checkoutInput.classList.remove('has-error');
+    } else {
+      if (modalNightsBadge) modalNightsBadge.textContent = `Invalid Dates`;
+      if (datesError) datesError.textContent = 'Check-out date must be after check-in date.';
+      checkoutInput.classList.add('has-error');
+    }
+  }
+
+  if (checkinInput) checkinInput.addEventListener('change', updateNightsBadge);
+  if (checkoutInput) checkoutInput.addEventListener('change', updateNightsBadge);
+  updateNightsBadge();
 
   openButtons.forEach((btn) => {
     btn.addEventListener('click', (e) => {
@@ -738,31 +944,94 @@ function setupEnquiryModal() {
     });
   }
 
+  // Clear errors on input typing
+  if (nameInput) {
+    nameInput.addEventListener('input', () => {
+      nameInput.classList.remove('has-error');
+      if (nameError) nameError.textContent = '';
+    });
+  }
+  if (emailInput) {
+    emailInput.addEventListener('input', () => {
+      emailInput.classList.remove('has-error');
+      if (emailError) emailError.textContent = '';
+    });
+  }
+
+  // Form submission with inline validation
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const nameInput = document.getElementById('guest-name');
-      const emailInput = document.getElementById('guest-email');
+      let isValid = true;
 
-      if (!nameInput || !emailInput || !nameInput.value.trim() || !emailInput.value.trim()) {
-        alert('Please provide your name and email address for this demo enquiry.');
-        return;
+      // Name validation
+      if (!nameInput || !nameInput.value.trim()) {
+        if (nameInput) nameInput.classList.add('has-error');
+        if (nameError) nameError.textContent = 'Please enter your full name.';
+        isValid = false;
       }
 
-      if (refNumSpan) {
-        refNumSpan.textContent = Math.floor(1000 + Math.random() * 9000);
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailInput || !emailInput.value.trim() || !emailRegex.test(emailInput.value.trim())) {
+        if (emailInput) emailInput.classList.add('has-error');
+        if (emailError) emailError.textContent = 'Please enter a valid email address.';
+        isValid = false;
+      }
+
+      // Date validation
+      const d1 = new Date(checkinInput.value);
+      const d2 = new Date(checkoutInput.value);
+      const nights = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+      if (nights <= 0) {
+        if (checkoutInput) checkoutInput.classList.add('has-error');
+        if (datesError) datesError.textContent = 'Check-out date must be at least 1 day after check-in.';
+        isValid = false;
+      }
+
+      if (!isValid) return;
+
+      // Generate simulated reference
+      const randomRef = `#ARV-DEMO-${Math.floor(1000 + Math.random() * 9000)}`;
+      if (refNumFull) refNumFull.textContent = randomRef;
+
+      if (receiptSuiteVal && suiteSelect) {
+        receiptSuiteVal.textContent = suiteSelect.value;
+      }
+      if (receiptDatesVal && guestSelect) {
+        receiptDatesVal.textContent = `${nights} Nights · ${guestSelect.options[guestSelect.selectedIndex].text}`;
       }
 
       if (formView) formView.style.display = 'none';
       if (confirmView) confirmView.classList.add('active');
     });
   }
+
+  // Copy reference code button
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const code = refNumFull ? refNumFull.textContent : '#ARV-DEMO-8492';
+      navigator.clipboard?.writeText(code).then(() => {
+        if (copyToast) {
+          copyToast.classList.add('show');
+          setTimeout(() => copyToast.classList.remove('show'), 2500);
+        }
+      }).catch(() => {
+        // Fallback
+        if (copyToast) {
+          copyToast.textContent = `Code: ${code}`;
+          copyToast.classList.add('show');
+        }
+      });
+    });
+  }
 }
 
-// 12. Setup Mobile Drawer Navigation
+// 12. Setup Mobile Drawer Navigation & Backdrop
 function setupMobileNav() {
   const toggleBtn = document.getElementById('mobile-nav-toggle');
   const drawer = document.getElementById('mobile-nav-drawer');
+  const backdrop = document.getElementById('mobile-nav-backdrop');
   const closeBtn = document.getElementById('mobile-drawer-close-btn');
   const drawerLinks = document.querySelectorAll('.mobile-drawer-link');
 
@@ -771,18 +1040,31 @@ function setupMobileNav() {
   const openDrawer = () => {
     drawer.classList.add('active');
     drawer.setAttribute('aria-hidden', 'false');
+    if (backdrop) backdrop.classList.add('active');
   };
 
   const closeDrawer = () => {
     drawer.classList.remove('active');
     drawer.setAttribute('aria-hidden', 'true');
+    if (backdrop) backdrop.classList.remove('active');
   };
 
   toggleBtn.addEventListener('click', openDrawer);
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
 
   drawerLinks.forEach((link) => {
     link.addEventListener('click', closeDrawer);
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (drawer.classList.contains('active')) closeDrawer();
+      const modal = document.getElementById('enquiry-modal');
+      if (modal?.classList.contains('active')) {
+        modal.classList.remove('active');
+      }
+    }
   });
 }
 
