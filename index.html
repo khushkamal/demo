@@ -5,19 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- DEMO SAFETY: Prevent search engine indexing -->
   <meta name="robots" content="noindex, nofollow" />
-  <title>Aravalli Retreat — Ranakpur & Jawai, Rajasthan (Demo)</title>
-  <meta name="description" content="An intimate boutique heritage sanctuary between the ancient marble temples of Ranakpur and the granite wilderness of Jawai in Rajasthan. Showcase demo website." />
+  <title>Aravalli Retreat — Ranakpur & Jawai, Rajasthan (Interactive Prototype)</title>
+  <meta name="description" content="An intimate boutique heritage sanctuary between the ancient marble temples of Ranakpur and the granite wilderness of Jawai in Rajasthan. Interactive 3D WebGL showcase demo." />
 
   <!-- Google Fonts: Cormorant Garamond (Editorial Serif) & Plus Jakarta Sans (Clean Sans) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
 
-  <!-- Sticky Luxury Navbar -->
+  <!-- Cursor Glow Aura (Desktop Interactive Visual) -->
+  <div id="cursor-glow" class="cursor-glow-aura" aria-hidden="true"></div>
+
+  <!-- Sticky Luxury Navbar with Live Audio & Atmosphere Controls -->
   <header class="editorial-navbar" role="banner">
     <a href="#hero" class="nav-brand-box" aria-label="Aravalli Retreat Home">
       <span class="nav-brand-title">Aravalli Retreat</span>
@@ -28,13 +31,32 @@
       <ul class="nav-links-menu">
         <li><a href="#story" class="nav-item-link">The Story</a></li>
         <li><a href="#suites" class="nav-item-link">Sanctuaries</a></li>
+        <li><a href="#suite-3d-explorer" class="nav-item-link highlight-pill"><span class="badge-dot"></span>3D Studio</a></li>
+        <li><a href="#corridor-map-section" class="nav-item-link">Corridor Map</a></li>
         <li><a href="#experiences" class="nav-item-link">Experiences</a></li>
+        <li><a href="#journey-planner-section" class="nav-item-link">Itinerary Planner</a></li>
         <li><a href="#gallery" class="nav-item-link">Atmosphere</a></li>
         <li><a href="#location" class="nav-item-link">Arrival</a></li>
       </ul>
     </nav>
 
     <div class="nav-actions-box">
+      <!-- Live Generative Audio Soundscape Button -->
+      <button id="audio-toggle-btn" class="nav-hud-pill-btn audio-pill" aria-label="Toggle Generative Ambient Soundscape" title="Play Generative Desert Soundscape">
+        <span class="equalizer-bars">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </span>
+        <span class="btn-label" id="audio-btn-text">Soundscape: Off</span>
+      </button>
+
+      <!-- Live Day / Night Atmosphere Switcher -->
+      <button id="atmosphere-toggle-btn" class="nav-hud-pill-btn time-pill" aria-label="Toggle Day and Night Atmosphere" title="Switch Atmosphere (Golden Dawn / Starlight Night)">
+        <span class="time-icon" id="atmosphere-icon">🌅</span>
+        <span class="btn-label" id="atmosphere-label">Golden Hour</span>
+      </button>
+
       <button class="btn-editorial btn-terracotta open-enquiry-modal-btn desktop-reserve-btn">Reserve (Demo)</button>
       
       <!-- Mobile Menu Toggle Button -->
@@ -50,10 +72,27 @@
       <div class="nav-brand-title" style="font-size: 1.3rem;">Aravalli Retreat</div>
       <button id="mobile-drawer-close-btn" class="mobile-drawer-close" aria-label="Close Mobile Menu">&times;</button>
     </div>
+    <div class="mobile-hud-controls">
+      <button id="mobile-audio-toggle" class="nav-hud-pill-btn audio-pill" style="width: 100%; margin-bottom: 10px;">
+        <span class="equalizer-bars">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </span>
+        <span id="mobile-audio-text">Ambient Soundscape</span>
+      </button>
+      <button id="mobile-atmosphere-toggle" class="nav-hud-pill-btn time-pill" style="width: 100%;">
+        <span id="mobile-atmosphere-icon">🌅</span>
+        <span id="mobile-atmosphere-text">Switch to Night Atmosphere</span>
+      </button>
+    </div>
     <ul class="mobile-drawer-links">
       <li><a href="#story" class="mobile-drawer-link">The Story</a></li>
       <li><a href="#suites" class="mobile-drawer-link">Sanctuaries</a></li>
+      <li><a href="#suite-3d-explorer" class="mobile-drawer-link">3D Studio & Explorer</a></li>
+      <li><a href="#corridor-map-section" class="mobile-drawer-link">Corridor Map</a></li>
       <li><a href="#experiences" class="mobile-drawer-link">Experiences</a></li>
+      <li><a href="#journey-planner-section" class="mobile-drawer-link">Bespoke Itinerary Planner</a></li>
       <li><a href="#gallery" class="mobile-drawer-link">Atmosphere</a></li>
       <li><a href="#location" class="mobile-drawer-link">Arrival</a></li>
       <li style="margin-top: 24px;">
@@ -66,25 +105,55 @@
   <!-- Main Content Body -->
   <main id="main-content">
 
-    <!-- 1. HERO SECTION (Real Photography with Smooth Parallax Zoom) -->
+    <!-- 1. HERO SECTION (Dual Experience: 3D Interactive WebGL Heritage Vista + High-Res Photography) -->
     <section id="hero" class="hero-editorial-section" aria-label="Hero Introduction">
+      
+      <!-- Media Container: WebGL Three.js 3D Canvas + Fallback/Photography Layer -->
       <div class="hero-parallax-media-container">
-        <img 
-          src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2400&q=90" 
-          alt="Serene Rajasthani heritage palace courtyard at golden sunrise" 
-          class="hero-main-photo" 
-        />
+        <!-- 3D Three.js WebGL Heritage Canvas -->
+        <div id="hero-webgl-container" class="hero-webgl-canvas-wrap"></div>
+
+        <!-- 2D High-Resolution Photo Layer (cross-fades seamlessly) -->
+        <div id="hero-photo-layer" class="hero-photo-layer">
+          <img 
+            src="https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2400&q=90" 
+            alt="Serene Rajasthani heritage palace courtyard at golden sunrise" 
+            class="hero-main-photo" 
+          />
+        </div>
+
         <div class="hero-atmospheric-scrim"></div>
       </div>
 
+      <!-- Floating Hero HUD Controls -->
+      <div class="hero-view-switch-dock">
+        <div class="hero-dock-label">Hero View:</div>
+        <div class="view-switch-pills">
+          <button id="view-mode-3d" class="view-switch-btn active" title="Switch to Real-time 3D WebGL Heritage Scene">
+            <span class="icon">✦</span> 3D WebGL Vista
+          </button>
+          <button id="view-mode-photo" class="view-switch-btn" title="Switch to Editorial Still Photography">
+            <span class="icon">📷</span> Editorial Photo
+          </button>
+        </div>
+        <div class="hero-dock-hint" id="hero-dock-hint">
+          <span class="pulse-indicator"></span> Move mouse or scroll to fly through 3D landscape
+        </div>
+      </div>
+
       <div class="hero-editorial-content">
-        <span class="editorial-kicker light">Boutique Heritage Sanctuary · Demo Prototype</span>
+        <span class="editorial-kicker light">Boutique Heritage Sanctuary · Interactive Showcase</span>
         <h1>Between carved marble <br /><span class="serif-italic">& granite wilderness</span></h1>
         <p>
           Positioned where the dense forest hills of Ranakpur meet the prehistoric granite landscape of Jawai, Aravalli Retreat offers an unhurried sanctuary honoring Marwar craftsmanship and wilderness stewardship.
         </p>
+        
         <div class="hero-actions-row">
           <button class="btn-editorial btn-white open-enquiry-modal-btn">Request an Enquiry (Demo)</button>
+          <a href="#suite-3d-explorer" class="btn-editorial btn-outline-light">
+            <span>Explore 3D Sanctuaries</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
 
         <div class="hero-meta-strip">
@@ -99,6 +168,10 @@
           <div class="hero-meta-item">
             <span class="meta-tag">Setting</span>
             <span class="meta-val">Aravalli Ridges & Jawai Rocks</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="meta-tag">Experience</span>
+            <span class="meta-val">Leopards, Temples & Baoris</span>
           </div>
         </div>
       </div>
@@ -204,7 +277,10 @@
                 <div class="suite-price-display">
                   ₹38,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
                 </div>
-                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Aravalli Marble Suite">Enquire</button>
+                <div class="suite-button-pair">
+                  <button class="btn-editorial-sm view-in-3d-btn" data-suite-preset="marble">3D View ✦</button>
+                  <button class="btn-editorial open-enquiry-modal-btn" data-suite="Aravalli Marble Suite">Enquire</button>
+                </div>
               </div>
             </div>
           </article>
@@ -243,7 +319,10 @@
                 <div class="suite-price-display">
                   ₹46,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
                 </div>
-                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Jawai Leopard Pavilion">Enquire</button>
+                <div class="suite-button-pair">
+                  <button class="btn-editorial-sm view-in-3d-btn" data-suite-preset="tent">3D View ✦</button>
+                  <button class="btn-editorial open-enquiry-modal-btn" data-suite="Jawai Leopard Pavilion">Enquire</button>
+                </div>
               </div>
             </div>
           </article>
@@ -282,10 +361,125 @@
                 <div class="suite-price-display">
                   ₹54,000 <span class="price-subtext">Sample Rate / Night (Demo)</span>
                 </div>
-                <button class="btn-editorial open-enquiry-modal-btn" data-suite="Rabari Royal Villa & Tent">Enquire</button>
+                <div class="suite-button-pair">
+                  <button class="btn-editorial-sm view-in-3d-btn" data-suite-preset="rabari">3D View ✦</button>
+                  <button class="btn-editorial open-enquiry-modal-btn" data-suite="Rabari Royal Villa & Tent">Enquire</button>
+                </div>
               </div>
             </div>
           </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 3.5 INTERACTIVE 3D SANCTUARY 360 EXPLORER & ARCHITECTURAL STUDIO (Standout Visual Feature) -->
+    <section id="suite-3d-explorer" class="editorial-section suite-3d-section bg-dark" aria-label="3D Suite Explorer">
+      <div class="editorial-container">
+        
+        <div class="section-header-block centered">
+          <span class="editorial-kicker light">Interactive 3D Architectural Studio</span>
+          <h2 class="section-main-heading light">Explore sanctuaries in 360° Real-time 3D</h2>
+          <p class="section-lead-paragraph light">
+            Interact with our handcrafted private suites. Rotate in full 360°, zoom in on bespoke Marwar artisan details, and inspect architectural craftsmanship.
+          </p>
+        </div>
+
+        <div class="suite-3d-showcase-box">
+          
+          <!-- Top 3D Control Strip -->
+          <div class="suite-3d-toolbar">
+            <div class="suite-3d-selector-pills">
+              <button class="suite-preset-btn active" data-preset="tent">
+                <span class="pill-dot"></span> Jawai Leopard Pavilion
+              </button>
+              <button class="suite-preset-btn" data-preset="marble">
+                <span class="pill-dot"></span> Aravalli Marble Suite
+              </button>
+              <button class="suite-preset-btn" data-preset="rabari">
+                <span class="pill-dot"></span> Rabari Royal Villa
+              </button>
+            </div>
+
+            <div class="suite-3d-action-toggles">
+              <button id="toggle-room-autorotate" class="hud-control-btn active" title="Toggle Auto-Rotation">
+                <span class="hud-icon">⟳</span> Auto-Rotate: On
+              </button>
+              <button id="toggle-room-lighting" class="hud-control-btn" title="Toggle Day/Night Lighting in Suite">
+                <span class="hud-icon">🕯️</span> Evening Mood
+              </button>
+            </div>
+          </div>
+
+          <!-- 3D Canvas Viewport + Interactive Hotspots -->
+          <div class="suite-3d-viewport-wrapper">
+            <div id="room-canvas-container" class="room-webgl-canvas"></div>
+
+            <!-- Floating 3D Interaction Badge -->
+            <div class="viewport-gesture-hint">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Drag to orbit 360° • Scroll / Pinch to Zoom</span>
+            </div>
+
+            <!-- Interactive Hotspot Pins overlaid in 3D studio -->
+            <div class="room-hotspot" style="top: 38%; left: 24%;" data-title="Handcrafted Jaali Lattice" data-desc="Intricately carved sandstone screens filtering desert sunlight into gentle geometric patterns.">
+              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
+              <div class="hotspot-tooltip">
+                <strong>Carved Jaali Screen</strong>
+                <p>Filters desert light into soothing geometric shadows.</p>
+              </div>
+            </div>
+
+            <div class="room-hotspot" style="top: 52%; left: 52%;" data-title="Four-Poster Sheesham Bed" data-desc="Hand-hewn Sheesham timber frame with organic Indian cotton linens and brass finials.">
+              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
+              <div class="hotspot-tooltip">
+                <strong>Royal Canopy Bed</strong>
+                <p>Four-poster Sheesham timber with organic Marwar linens.</p>
+              </div>
+            </div>
+
+            <div class="room-hotspot" style="top: 28%; left: 74%;" data-title="Brass Lantern & Chhatri Finial" data-desc="Mewari hand-beaten brass lantern casting warm amber starlight glows at dusk.">
+              <div class="hotspot-pin"><span class="hotspot-pulse"></span>+</div>
+              <div class="hotspot-tooltip">
+                <strong>Handcrafted Brass Lantern</strong>
+                <p>Hand-hammered brass casting warm evening ambiance.</p>
+              </div>
+            </div>
+
+            <!-- Suite Real-time Dynamic Info HUD -->
+            <div class="suite-3d-specs-overlay" id="suite-specs-hud">
+              <div class="specs-header">
+                <span class="specs-kicker" id="specs-kicker">Granite Ridge Wing</span>
+                <h4 class="specs-title" id="specs-title">Jawai Leopard Pavilion</h4>
+              </div>
+              <p class="specs-desc" id="specs-desc">
+                Safari tent architecture with granite boulders, outdoor star observation terrace, and hand-stitched leather furnishings.
+              </p>
+              <div class="specs-grid">
+                <div class="spec-cell">
+                  <span class="lbl">Area</span>
+                  <span class="val" id="specs-area">1,400 sq ft</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="lbl">View</span>
+                  <span class="val" id="specs-view">Granite Monoliths</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="lbl">Signature</span>
+                  <span class="val" id="specs-feature">Stargazing Deck</span>
+                </div>
+                <div class="spec-cell">
+                  <span class="lbl">Sample Rate</span>
+                  <span class="val" id="specs-price">₹46,000 / Night</span>
+                </div>
+              </div>
+              <button class="btn-editorial btn-terracotta open-enquiry-modal-btn" id="specs-enquire-btn" data-suite="Jawai Leopard Pavilion" style="width: 100%; margin-top: 18px;">
+                Reserve Sanctuary (Demo)
+              </button>
+            </div>
+
+          </div>
+
         </div>
 
       </div>
@@ -304,6 +498,118 @@
       <div class="cinematic-interlude-content">
         <span class="editorial-kicker light">Wilderness Landscape</span>
         <h2>"Where prehistoric rock formations meet the desert twilight."</h2>
+      </div>
+    </section>
+
+    <!-- 4.5 INTERACTIVE TOPOGRAPHICAL EXPEDITION MAP (Unique Visual Feature) -->
+    <section id="corridor-map-section" class="editorial-section corridor-map-section bg-secondary" aria-label="Topographical Corridor Map">
+      <div class="editorial-container">
+        
+        <div class="section-header-block">
+          <span class="editorial-kicker">Geography & Corridors</span>
+          <h2 class="section-main-heading">The Ranakpur – Jawai Heritage Corridor</h2>
+          <p class="section-lead-paragraph">
+            Nestled between the dense teak forests of the Aravalli hills and the pre-Cambrian granite boulders of Jawai. Click any destination on the interactive route to preview distances and travel profiles.
+          </p>
+        </div>
+
+        <div class="interactive-corridor-map-card">
+          
+          <!-- Vector / Styled Interactive Map Surface -->
+          <div class="map-graphic-surface">
+            <!-- Stylized Topographic Contour Lines SVG -->
+            <svg class="topography-contour-svg" viewBox="0 0 1000 520" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="routeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#C2A675" stop-opacity="0.85" />
+                  <stop offset="50%" stop-color="#9E5A44" stop-opacity="1" />
+                  <stop offset="100%" stop-color="#C2A675" stop-opacity="0.85" />
+                </linearGradient>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3" result="glow" />
+                  <feComposite in="SourceGraphic" in2="glow" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Stylized terrain contour waves -->
+              <path d="M 50,450 Q 250,380 500,420 T 950,360" fill="none" stroke="rgba(158, 90, 68, 0.12)" stroke-width="1.5" />
+              <path d="M 20,380 Q 280,300 520,340 T 980,280" fill="none" stroke="rgba(158, 90, 68, 0.14)" stroke-width="1.5" />
+              <path d="M 80,290 Q 320,220 560,260 T 920,200" fill="none" stroke="rgba(158, 90, 68, 0.16)" stroke-width="1.5" />
+              <path d="M 120,200 Q 360,140 600,180 T 880,120" fill="none" stroke="rgba(158, 90, 68, 0.15)" stroke-width="1.5" />
+              <path d="M 160,110 Q 400,70 640,100 T 840,50" fill="none" stroke="rgba(158, 90, 68, 0.12)" stroke-width="1.5" />
+
+              <!-- Connecting Scenic Route Path -->
+              <path id="scenic-route-line" class="animated-route-path" d="M 180,420 L 320,320 L 500,240 L 680,180 L 820,110" fill="none" stroke="url(#routeGradient)" stroke-width="3" stroke-dasharray="6,6" />
+
+              <!-- Ridge Elevation Shading Shapes -->
+              <polygon points="460,240 500,190 540,240" fill="rgba(194, 166, 117, 0.18)" />
+              <polygon points="640,180 680,130 720,180" fill="rgba(194, 166, 117, 0.18)" />
+              <polygon points="280,320 320,270 360,320" fill="rgba(194, 166, 117, 0.18)" />
+            </svg>
+
+            <!-- Interactive Waypoint Pins on Map -->
+            <div class="map-waypoint-node active" style="top: 46%; left: 50%;" data-id="retreat">
+              <div class="pin-ring primary-retreat"><span class="pin-core"></span></div>
+              <div class="pin-tag">✦ Aravalli Retreat (Sanctuary)</div>
+            </div>
+
+            <div class="map-waypoint-node" style="top: 61%; left: 32%;" data-id="ranakpur">
+              <div class="pin-ring"><span class="pin-core"></span></div>
+              <div class="pin-tag">Ranakpur Jain Temples</div>
+            </div>
+
+            <div class="map-waypoint-node" style="top: 34%; left: 68%;" data-id="jawai">
+              <div class="pin-ring"><span class="pin-core"></span></div>
+              <div class="pin-tag">Jawai Leopard Monoliths</div>
+            </div>
+
+            <div class="map-waypoint-node" style="top: 21%; left: 82%;" data-id="dam">
+              <div class="pin-ring"><span class="pin-core"></span></div>
+              <div class="pin-tag">Jawai Bandh Dam & Wetlands</div>
+            </div>
+
+            <div class="map-waypoint-node" style="top: 80%; left: 18%;" data-id="udaipur">
+              <div class="pin-ring"><span class="pin-core"></span></div>
+              <div class="pin-tag">Udaipur Gateway (UDR)</div>
+            </div>
+          </div>
+
+          <!-- Dynamic Route Info Panel on the Right -->
+          <div class="map-details-sidebar" id="map-sidebar-card">
+            <span class="editorial-kicker" id="map-node-kicker">Sanctuary Base</span>
+            <h3 class="map-sidebar-title" id="map-node-title">Aravalli Retreat</h3>
+            <p class="map-sidebar-desc" id="map-node-desc">
+              Situated in an undisturbed valley corridor with zero light pollution, private stepwells, and direct access to both teak forests and leopard caves.
+            </p>
+            
+            <div class="map-sidebar-metrics">
+              <div class="metric-box">
+                <span class="m-lbl">Distance</span>
+                <span class="m-val" id="map-metric-dist">Center Point</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-lbl">Drive Time</span>
+                <span class="m-val" id="map-metric-time">0 min</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-lbl">Elevation</span>
+                <span class="m-val" id="map-metric-elev">520 m MSL</span>
+              </div>
+              <div class="metric-box">
+                <span class="m-lbl">Terrain</span>
+                <span class="m-val" id="map-metric-terrain">Forest & Granite</span>
+              </div>
+            </div>
+
+            <div class="map-highlights-list" id="map-node-highlights">
+              <div class="h-item">✓ 16 private villas & luxury tented pavilions</div>
+              <div class="h-item">✓ Baori stepwell dining under starry skies</div>
+              <div class="h-item">✓ Private naturalist-guided 4x4 safaris</div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
@@ -424,6 +730,180 @@
               A scenic mountain drive to the UNESCO World Heritage fortress, standing atop the second-longest continuous fortification wall in the world.
             </p>
           </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 5.5 INTERACTIVE BESPOKE ITINERARY & ESTIMATOR (Unique Deal-Winning Feature) -->
+    <section id="journey-planner-section" class="editorial-section journey-planner-section" aria-label="Bespoke Itinerary Planner">
+      <div class="editorial-container">
+        
+        <div class="section-header-block centered">
+          <span class="editorial-kicker">Custom Journey</span>
+          <h2 class="section-main-heading">Curate Your Bespoke Sanctuary Stay</h2>
+          <p class="section-lead-paragraph">
+            Personalize your retreat experience in real-time. Choose your duration, sanctuary, and curated expeditions to generate an instant custom proposal.
+          </p>
+        </div>
+
+        <div class="planner-interactive-card">
+          
+          <!-- Left: Configurator Form -->
+          <div class="planner-config-col">
+            
+            <!-- Currency selector -->
+            <div class="planner-unit-group">
+              <label class="unit-label">Display Currency</label>
+              <div class="currency-pills-row">
+                <button class="currency-pill active" data-currency="INR">INR (₹)</button>
+                <button class="currency-pill" data-currency="USD">USD ($)</button>
+                <button class="currency-pill" data-currency="EUR">EUR (€)</button>
+                <button class="currency-pill" data-currency="GBP">GBP (£)</button>
+              </div>
+            </div>
+
+            <!-- Length of Stay -->
+            <div class="planner-unit-group">
+              <div class="unit-header-flex">
+                <label class="unit-label">Length of Stay</label>
+                <span class="unit-val-pill" id="planner-nights-badge">3 Nights</span>
+              </div>
+              <input type="range" id="planner-nights-slider" min="2" max="7" value="3" class="planner-range-slider" />
+              <div class="range-ticks-row">
+                <span>2 Nights</span>
+                <span>3 Nights</span>
+                <span>4 Nights</span>
+                <span>5 Nights</span>
+                <span>7 Nights</span>
+              </div>
+            </div>
+
+            <!-- Sanctuary Selection -->
+            <div class="planner-unit-group">
+              <label class="unit-label">Select Sanctuary</label>
+              <div class="sanctuary-picker-grid">
+                <label class="sanctuary-radio-card active">
+                  <input type="radio" name="planner-suite" value="marble" data-rate="38000" checked />
+                  <span class="card-body-wrap">
+                    <strong>Aravalli Marble Suite</strong>
+                    <span class="subtext">Forest Ridge · Plunge Pool</span>
+                  </span>
+                </label>
+
+                <label class="sanctuary-radio-card">
+                  <input type="radio" name="planner-suite" value="tent" data-rate="46000" />
+                  <span class="card-body-wrap">
+                    <strong>Jawai Leopard Pavilion</strong>
+                    <span class="subtext">Granite Ridge · Stargazing Deck</span>
+                  </span>
+                </label>
+
+                <label class="sanctuary-radio-card">
+                  <input type="radio" name="planner-suite" value="rabari" data-rate="54000" />
+                  <span class="card-body-wrap">
+                    <strong>Rabari Royal Villa & Tent</strong>
+                    <span class="subtext">Private Courtyard · Heated Pool</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Bespoke Inclusions -->
+            <div class="planner-unit-group">
+              <label class="unit-label">Bespoke Expeditions & Add-ons</label>
+              <div class="inclusions-checklist">
+                <label class="inclusion-checkbox-item">
+                  <input type="checkbox" class="planner-exp-check" data-cost="7500" data-name="Jawai Leopard 4x4 Tracking" checked />
+                  <span class="checkbox-custom"></span>
+                  <span class="inclusion-info">
+                    <strong>Jawai Leopard 4x4 Expedition</strong>
+                    <span class="inc-rate">+ ₹7,500 / safari</span>
+                  </span>
+                </label>
+
+                <label class="inclusion-checkbox-item">
+                  <input type="checkbox" class="planner-exp-check" data-cost="5000" data-name="Stepwell Starlight Dining" checked />
+                  <span class="checkbox-custom"></span>
+                  <span class="inclusion-info">
+                    <strong>Stepwell Candlelit Mewari Dining</strong>
+                    <span class="inc-rate">+ ₹5,000 / dinner</span>
+                  </span>
+                </label>
+
+                <label class="inclusion-checkbox-item">
+                  <input type="checkbox" class="planner-exp-check" data-cost="3500" data-name="Ranakpur Dawn Temple Walk" />
+                  <span class="checkbox-custom"></span>
+                  <span class="inclusion-info">
+                    <strong>Private Dawn Temple Tour at Ranakpur</strong>
+                    <span class="inc-rate">+ ₹3,500 / tour</span>
+                  </span>
+                </label>
+
+                <label class="inclusion-checkbox-item">
+                  <input type="checkbox" class="planner-exp-check" data-cost="4000" data-name="Ayurvedic Sound Bath & Yoga" />
+                  <span class="checkbox-custom"></span>
+                  <span class="inclusion-info">
+                    <strong>Sound Bath & Morning Yoga Session</strong>
+                    <span class="inc-rate">+ ₹4,000 / session</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right: Dynamic Luxury Proposal Card -->
+          <div class="planner-summary-col">
+            <div class="proposal-card-inner">
+              <span class="editorial-kicker">Custom Proposal (Demo)</span>
+              <h3 class="proposal-heading" id="proposal-suite-name">Aravalli Marble Suite Stay</h3>
+              <div class="proposal-duration-tag" id="proposal-nights-label">3 Nights · 2 Guests</div>
+              
+              <div class="proposal-divider"></div>
+
+              <div class="proposal-line-items" id="proposal-items-list">
+                <div class="line-item">
+                  <span>3 Nights Accommodation</span>
+                  <span id="line-item-room">₹1,14,000</span>
+                </div>
+                <div class="line-item">
+                  <span>Jawai Leopard 4x4 Expedition</span>
+                  <span>₹7,500</span>
+                </div>
+                <div class="line-item">
+                  <span>Stepwell Candlelit Dining</span>
+                  <span>₹5,000</span>
+                </div>
+              </div>
+
+              <div class="proposal-divider"></div>
+
+              <div class="complimentary-perks-box">
+                <div class="perks-title">Complimentary Inclusions:</div>
+                <ul class="perks-list">
+                  <li>✦ Chauffeur airport transfers from Udaipur (UDR)</li>
+                  <li>✦ Daily farm-to-table breakfast & high tea</li>
+                  <li>✦ Evening folk Manganiyar music courtyard sessions</li>
+                </ul>
+              </div>
+
+              <div class="proposal-total-row">
+                <div>
+                  <span class="total-label">Estimated Total (Demo)</span>
+                  <div class="total-subtext">Includes all curated expeditions & taxes</div>
+                </div>
+                <div class="total-amount-display" id="planner-total-amount">
+                  ₹1,26,500
+                </div>
+              </div>
+
+              <button class="btn-editorial btn-terracotta" id="book-curated-journey-btn" style="width: 100%; margin-top: 22px;">
+                Enquire for This Itinerary (Demo)
+              </button>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -589,7 +1069,10 @@
           <ul class="footer-links-group">
             <li><a href="#story">The Story</a></li>
             <li><a href="#suites">Sanctuaries & Suites</a></li>
+            <li><a href="#suite-3d-explorer">3D Architectural Studio</a></li>
+            <li><a href="#corridor-map-section">Corridor Map</a></li>
             <li><a href="#experiences">Curated Experiences</a></li>
+            <li><a href="#journey-planner-section">Bespoke Planner</a></li>
             <li><a href="#gallery">Atmosphere</a></li>
             <li><a href="#location">Arrival & Map</a></li>
           </ul>
@@ -613,8 +1096,8 @@
       </div>
 
       <div class="footer-bottom-strip">
-        <div>&copy; 2026 Aravalli Retreat (Fictional Showcase Demo). All rights reserved.</div>
-        <div>Calm Editorial Heritage Design</div>
+        <div>&copy; 2026 Aravalli Retreat (Showcase Prototype). All rights reserved.</div>
+        <div>Interactive 3D WebGL & Editorial Experience</div>
       </div>
 
     </div>

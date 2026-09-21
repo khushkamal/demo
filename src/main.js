@@ -1,16 +1,134 @@
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { HeroScene } from './scenes/heroScene.js';
+import { RoomViewer } from './scenes/roomViewer.js';
+import { soundscape } from './utils/audioEngine.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
  * --------------------------------------------------------------------------
- * ARAVALLI RETREAT - EDITORIAL INTERACTION ENGINE
- * Reference Feel: Aman, Six Senses, SUJÁN Jawai, Oberoi Udaivilas
- * Lenis Smooth Scrolling + GSAP Scroll Parallax & Zoom Animations
+ * ARAVALLI RETREAT - INTERACTION ENGINE & 3D CONTROLLER
+ * Lenis Smooth Scroll + Three.js 3D WebGL + Generative Soundscape + Interactive HUD
  * --------------------------------------------------------------------------
  */
+
+// Global Application State
+const appState = {
+  isNight: false,
+  hero3DActive: true,
+  heroScene: null,
+  roomViewer: null,
+  currency: 'INR',
+  currencyRates: {
+    INR: { symbol: '₹', rate: 1, suffix: '' },
+    USD: { symbol: '$', rate: 0.012, suffix: '' },
+    EUR: { symbol: '€', rate: 0.011, suffix: '' },
+    GBP: { symbol: '£', rate: 0.0095, suffix: '' }
+  },
+  suitesData: {
+    marble: {
+      kicker: 'Forest Wing · Plunge Pool',
+      name: 'Aravalli Marble Suite',
+      desc: 'Makrana marble floors, private sunlit jharokha balcony overlooking the forest canopy, deep copper soaking bath, and four-poster Sheesham canopy bed.',
+      area: '1,150 sq ft',
+      view: 'Forest Ridge',
+      feature: 'Plunge Pool',
+      rateINR: 38000
+    },
+    tent: {
+      kicker: 'Granite Ridge · Safari Pavilion',
+      name: 'Jawai Leopard Pavilion',
+      desc: 'Set alongside ancient granite monoliths with a wide private stargazing deck, brass telescope, outdoor rain shower, and leather-accented lounge.',
+      area: '1,400 sq ft',
+      view: 'Granite Monoliths',
+      feature: 'Stargazing Deck',
+      rateINR: 46000
+    },
+    rabari: {
+      kicker: 'Private Courtyard · Heated Pool',
+      name: 'Rabari Royal Villa & Tent',
+      desc: 'A bespoke canvas and sandstone villa celebrating pastoral crafts, featuring hand-embroidered textiles, private stone courtyard, heated plunge pool, and fire pit.',
+      area: '1,750 sq ft',
+      view: 'Private Valley',
+      feature: 'Heated Pool',
+      rateINR: 54000
+    }
+  },
+  mapWaypoints: {
+    retreat: {
+      kicker: 'Sanctuary Center',
+      title: 'Aravalli Retreat',
+      desc: 'Situated in an undisturbed valley corridor with zero light pollution, private stepwells, and direct access to both teak forests and leopard caves.',
+      dist: 'Center Point',
+      time: '0 min',
+      elev: '520 m MSL',
+      terrain: 'Forest & Granite',
+      highlights: [
+        '✓ 16 private villas & luxury tented pavilions',
+        '✓ Baori stepwell dining under starry skies',
+        '✓ Private naturalist-guided 4x4 safaris'
+      ]
+    },
+    ranakpur: {
+      kicker: '15th-Century Sacred Architecture',
+      title: 'Ranakpur Jain Temples',
+      desc: 'World-renowned architectural masterpiece carved from light-reflecting Makrana marble with 1,444 uniquely sculptured columns, where no two pillars are alike.',
+      dist: '~18 km',
+      time: '25 mins drive',
+      elev: '486 m MSL',
+      terrain: 'Forest Foothills',
+      highlights: [
+        '✓ Dawn private access before general public entry',
+        '✓ Expert architectural historian accompaniment',
+        '✓ Spectacular early-morning marble light resonance'
+      ]
+    },
+    jawai: {
+      kicker: 'Granite Monolith Wilderness',
+      title: 'Jawai Leopard Monoliths',
+      desc: 'Pre-Cambrian granite hills where wild leopards dwell freely alongside the semi-nomadic Rabari shepherds in unbroken peace and mutual respect.',
+      dist: '~24 km',
+      time: '35 mins drive',
+      elev: '410 m MSL',
+      terrain: 'Granite Boulders & Caves',
+      highlights: [
+        '✓ Custom open-top 4x4 tracking safaris',
+        '✓ Naturalists with ancestral cave tracking knowledge',
+        '✓ High density of leopard sightings in rocky caves'
+      ]
+    },
+    dam: {
+      kicker: 'Wetlands & Water Birds',
+      title: 'Jawai Bandh Dam & Wetlands',
+      desc: 'The largest water reservoir in western Rajasthan, serving as an oasis for winter migratory birds including flamingos, pelicans, sarus cranes, and Indian mugger crocodiles.',
+      dist: '~28 km',
+      time: '40 mins drive',
+      elev: '360 m MSL',
+      terrain: 'Expansive Lake & Shoreline',
+      highlights: [
+        '✓ Afternoon sunset tea by the water banks',
+        '✓ Over 100 species of migratory and resident birds',
+        '✓ Scenic granite boulder reflections across the lake'
+      ]
+    },
+    udaipur: {
+      kicker: 'Royal Aviation Gateway',
+      title: 'Udaipur Airport (UDR)',
+      desc: 'Maharana Pratap Airport in Udaipur serves as the primary gateway for private aviation and commercial flights arriving into Southern Rajasthan.',
+      dist: '~110 km',
+      time: '2.5 hrs drive',
+      elev: '513 m MSL',
+      terrain: 'Scenic Mountain Highway',
+      highlights: [
+        '✓ Chauffeur-driven private luxury SUV transfers',
+        '✓ Scenic drive crossing the forested Aravalli passes',
+        '✓ In-vehicle refreshments and chilled towels'
+      ]
+    }
+  }
+};
 
 // 1. Initialize Lenis Smooth Scrolling
 function initSmoothScroll() {
@@ -19,7 +137,7 @@ function initSmoothScroll() {
 
   const lenis = new Lenis({
     duration: 1.3,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // exponential ease-out
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     orientation: 'vertical',
     gestureOrientation: 'vertical',
     smoothWheel: true,
@@ -28,24 +146,35 @@ function initSmoothScroll() {
     infinite: false,
   });
 
-  // Connect Lenis to GSAP ScrollTrigger
   lenis.on('scroll', ScrollTrigger.update);
-
   gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
   });
-
   gsap.ticker.lagSmoothing(0);
 
   return lenis;
 }
 
-// 2. Setup Cinematic Scroll Parallax & Zoom Effects
+// 2. Setup Cursor Glow Aura
+function setupCursorGlow() {
+  const glow = document.getElementById('cursor-glow');
+  if (!glow || window.innerWidth < 1024) return;
+
+  window.addEventListener('mousemove', (e) => {
+    gsap.to(glow, {
+      x: e.clientX,
+      y: e.clientY,
+      duration: 0.6,
+      ease: 'power2.out'
+    });
+  }, { passive: true });
+}
+
+// 3. Setup Navbar Scroll State & Parallax
 function setupScrollParallax() {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
-  // Navbar background change on scroll
   const navbar = document.querySelector('.editorial-navbar');
   ScrollTrigger.create({
     start: 'top -60',
@@ -58,23 +187,7 @@ function setupScrollParallax() {
     }
   });
 
-  // Hero main photo smooth zoom-out & parallax drift on scroll
-  const heroPhoto = document.querySelector('.hero-main-photo');
-  if (heroPhoto) {
-    gsap.to(heroPhoto, {
-      yPercent: 18,
-      scale: 1.0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: '#hero',
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true
-      }
-    });
-  }
-
-  // Story primary photo subtle parallax
+  // Story primary photo parallax
   const storyPhoto = document.querySelector('.story-primary-photo');
   if (storyPhoto) {
     gsap.to(storyPhoto, {
@@ -89,7 +202,7 @@ function setupScrollParallax() {
     });
   }
 
-  // Full-bleed cinematic interlude photo parallax
+  // Full-bleed cinematic photo parallax
   const cinematicPhoto = document.querySelector('.cinematic-bg-photo');
   if (cinematicPhoto) {
     gsap.to(cinematicPhoto, {
@@ -138,7 +251,386 @@ function setupScrollParallax() {
   }
 }
 
-// 3. Setup Atmosphere Lightbox Modal
+// 4. Setup 3D WebGL Hero Scene
+function initHero3D() {
+  const container = document.getElementById('hero-webgl-container');
+  if (!container) return;
+
+  try {
+    appState.heroScene = new HeroScene(container, (pct, status) => {
+      const hint = document.getElementById('hero-dock-hint');
+      if (hint && pct < 100) {
+        hint.innerHTML = `<span class="pulse-indicator"></span> Loading 3D World: ${pct}% (${status})`;
+      } else if (hint) {
+        hint.innerHTML = `<span class="pulse-indicator"></span> Move mouse or scroll to pan 3D sanctuary`;
+      }
+    });
+  } catch (err) {
+    console.warn('Hero 3D fallback to photo layer:', err);
+    toggleHeroView(false);
+  }
+
+  // Hero View Switcher Buttons (3D vs Photo)
+  const btn3D = document.getElementById('view-mode-3d');
+  const btnPhoto = document.getElementById('view-mode-photo');
+
+  if (btn3D && btnPhoto) {
+    btn3D.addEventListener('click', () => toggleHeroView(true));
+    btnPhoto.addEventListener('click', () => toggleHeroView(false));
+  }
+}
+
+function toggleHeroView(enable3D) {
+  appState.hero3DActive = enable3D;
+  const canvasWrap = document.getElementById('hero-webgl-container');
+  const photoLayer = document.getElementById('hero-photo-layer');
+  const btn3D = document.getElementById('view-mode-3d');
+  const btnPhoto = document.getElementById('view-mode-photo');
+  const hint = document.getElementById('hero-dock-hint');
+
+  if (enable3D) {
+    if (btn3D) btn3D.classList.add('active');
+    if (btnPhoto) btnPhoto.classList.remove('active');
+    if (canvasWrap) canvasWrap.classList.remove('hidden');
+    if (photoLayer) photoLayer.classList.remove('active');
+    if (appState.heroScene) appState.heroScene.resume();
+    if (hint) hint.innerHTML = `<span class="pulse-indicator"></span> Move mouse or scroll to pan 3D sanctuary`;
+  } else {
+    if (btnPhoto) btnPhoto.classList.add('active');
+    if (btn3D) btn3D.classList.remove('active');
+    if (canvasWrap) canvasWrap.classList.add('hidden');
+    if (photoLayer) photoLayer.classList.add('active');
+    if (appState.heroScene) appState.heroScene.pause();
+    if (hint) hint.innerHTML = `<span>📷</span> High-resolution photography vista`;
+  }
+}
+
+// 5. Setup 3D Sanctuary Suite Explorer
+function initRoomViewer() {
+  const container = document.getElementById('room-canvas-container');
+  if (!container) return;
+
+  try {
+    appState.roomViewer = new RoomViewer(container, () => {
+      // Room ready
+    });
+  } catch (err) {
+    console.warn('Room Viewer init failed:', err);
+  }
+
+  // Suite Preset Switcher Buttons
+  const presetBtns = document.querySelectorAll('.suite-preset-btn');
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      presetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const preset = btn.getAttribute('data-preset');
+      if (appState.roomViewer) appState.roomViewer.setPreset(preset);
+      updateSuiteSpecsHUD(preset);
+    });
+  });
+
+  // "3D View ✦" buttons on 2D suite cards
+  const card3DBtns = document.querySelectorAll('.view-in-3d-btn');
+  card3DBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const preset = btn.getAttribute('data-suite-preset');
+      const explorer = document.getElementById('suite-3d-explorer');
+      if (explorer) {
+        explorer.scrollIntoView({ behavior: 'smooth' });
+      }
+      // Activate matching preset button
+      presetBtns.forEach(b => {
+        if (b.getAttribute('data-preset') === preset) {
+          b.click();
+        }
+      });
+    });
+  });
+
+  // Auto-Rotate Toggle
+  const autoRotateBtn = document.getElementById('toggle-room-autorotate');
+  if (autoRotateBtn) {
+    autoRotateBtn.addEventListener('click', () => {
+      if (appState.roomViewer) {
+        appState.roomViewer.autoRotate = !appState.roomViewer.autoRotate;
+        if (appState.roomViewer.autoRotate) {
+          autoRotateBtn.classList.add('active');
+          autoRotateBtn.innerHTML = `<span class="hud-icon">⟳</span> Auto-Rotate: On`;
+        } else {
+          autoRotateBtn.classList.remove('active');
+          autoRotateBtn.innerHTML = `<span class="hud-icon">⏸</span> Auto-Rotate: Paused`;
+        }
+      }
+    });
+  }
+
+  // Evening Mood Toggle
+  const lightingBtn = document.getElementById('toggle-room-lighting');
+  if (lightingBtn) {
+    let roomNight = false;
+    lightingBtn.addEventListener('click', () => {
+      roomNight = !roomNight;
+      if (lightingBtn) {
+        lightingBtn.classList.toggle('active', roomNight);
+        lightingBtn.innerHTML = roomNight 
+          ? `<span class="hud-icon">🕯️</span> Evening Mood: On` 
+          : `<span class="hud-icon">☀️</span> Daylight`;
+      }
+    });
+  }
+}
+
+function updateSuiteSpecsHUD(preset) {
+  const data = appState.suitesData[preset];
+  if (!data) return;
+
+  const kicker = document.getElementById('specs-kicker');
+  const title = document.getElementById('specs-title');
+  const desc = document.getElementById('specs-desc');
+  const area = document.getElementById('specs-area');
+  const view = document.getElementById('specs-view');
+  const feature = document.getElementById('specs-feature');
+  const price = document.getElementById('specs-price');
+  const enquireBtn = document.getElementById('specs-enquire-btn');
+
+  if (kicker) kicker.textContent = data.kicker;
+  if (title) title.textContent = data.name;
+  if (desc) desc.textContent = data.desc;
+  if (area) area.textContent = data.area;
+  if (view) view.textContent = data.view;
+  if (feature) feature.textContent = data.feature;
+  if (price) {
+    const cur = appState.currencyRates[appState.currency];
+    const converted = Math.round(data.rateINR * cur.rate);
+    price.textContent = `${cur.symbol}${converted.toLocaleString()} / Night`;
+  }
+  if (enquireBtn) {
+    enquireBtn.setAttribute('data-suite', data.name);
+  }
+}
+
+// 6. Setup Generative Ambient Soundscape
+function setupAudioSoundscape() {
+  const toggleBtn = document.getElementById('audio-toggle-btn');
+  const mobileToggleBtn = document.getElementById('mobile-audio-toggle');
+  const btnText = document.getElementById('audio-btn-text');
+  const mobileText = document.getElementById('mobile-audio-text');
+
+  const handleToggle = () => {
+    const isPlaying = soundscape.toggle();
+    if (toggleBtn) toggleBtn.classList.toggle('playing', isPlaying);
+    if (mobileToggleBtn) mobileToggleBtn.classList.toggle('playing', isPlaying);
+    
+    if (btnText) btnText.textContent = isPlaying ? 'Soundscape: Live' : 'Soundscape: Off';
+    if (mobileText) mobileText.textContent = isPlaying ? 'Soundscape: Playing (Live)' : 'Ambient Soundscape: Off';
+  };
+
+  if (toggleBtn) toggleBtn.addEventListener('click', handleToggle);
+  if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', handleToggle);
+}
+
+// 7. Setup Atmosphere Day / Night Toggle
+function setupAtmosphereToggle() {
+  const toggleBtn = document.getElementById('atmosphere-toggle-btn');
+  const mobileToggleBtn = document.getElementById('mobile-atmosphere-toggle');
+  const icon = document.getElementById('atmosphere-icon');
+  const label = document.getElementById('atmosphere-label');
+  const mobileIcon = document.getElementById('mobile-atmosphere-icon');
+  const mobileText = document.getElementById('mobile-atmosphere-text');
+
+  const handleAtmosphere = () => {
+    appState.isNight = !appState.isNight;
+    document.body.classList.toggle('theme-night', appState.isNight);
+
+    if (appState.heroScene) {
+      appState.heroScene.setDayNight(appState.isNight);
+    }
+
+    if (appState.isNight) {
+      if (icon) icon.textContent = '🌌';
+      if (label) label.textContent = 'Starlight Night';
+      if (mobileIcon) mobileIcon.textContent = '🌌';
+      if (mobileText) mobileText.textContent = 'Switch to Golden Hour';
+    } else {
+      if (icon) icon.textContent = '🌅';
+      if (label) label.textContent = 'Golden Hour';
+      if (mobileIcon) mobileIcon.textContent = '🌅';
+      if (mobileText) mobileText.textContent = 'Switch to Starlight Night';
+    }
+  };
+
+  if (toggleBtn) toggleBtn.addEventListener('click', handleAtmosphere);
+  if (mobileToggleBtn) mobileToggleBtn.addEventListener('click', handleAtmosphere);
+}
+
+// 8. Setup Interactive Corridor Map
+function setupCorridorMap() {
+  const waypoints = document.querySelectorAll('.map-waypoint-node');
+  const kicker = document.getElementById('map-node-kicker');
+  const title = document.getElementById('map-node-title');
+  const desc = document.getElementById('map-node-desc');
+  const dist = document.getElementById('map-metric-dist');
+  const time = document.getElementById('map-metric-time');
+  const elev = document.getElementById('map-metric-elev');
+  const terrain = document.getElementById('map-metric-terrain');
+  const highlights = document.getElementById('map-node-highlights');
+
+  waypoints.forEach(node => {
+    node.addEventListener('click', () => {
+      waypoints.forEach(n => n.classList.remove('active'));
+      node.classList.add('active');
+
+      const id = node.getAttribute('data-id');
+      const data = appState.mapWaypoints[id];
+      if (!data) return;
+
+      if (kicker) kicker.textContent = data.kicker;
+      if (title) title.textContent = data.title;
+      if (desc) desc.textContent = data.desc;
+      if (dist) dist.textContent = data.dist;
+      if (time) time.textContent = data.time;
+      if (elev) elev.textContent = data.elev;
+      if (terrain) terrain.textContent = data.terrain;
+
+      if (highlights) {
+        highlights.innerHTML = data.highlights.map(h => `<div class="h-item">${h}</div>`).join('');
+      }
+    });
+  });
+}
+
+// 9. Setup Bespoke Journey & Cost Estimator
+function setupJourneyPlanner() {
+  const nightsSlider = document.getElementById('planner-nights-slider');
+  const nightsBadge = document.getElementById('planner-nights-badge');
+  const suiteRadios = document.querySelectorAll('input[name="planner-suite"]');
+  const expChecks = document.querySelectorAll('.planner-exp-check');
+  const currencyPills = document.querySelectorAll('.currency-pill');
+
+  const proposalSuite = document.getElementById('proposal-suite-name');
+  const proposalNights = document.getElementById('proposal-nights-label');
+  const itemsList = document.getElementById('proposal-items-list');
+  const totalDisplay = document.getElementById('planner-total-amount');
+  const bookBtn = document.getElementById('book-curated-journey-btn');
+
+  function calculateProposal() {
+    const nights = parseInt(nightsSlider ? nightsSlider.value : 3, 10);
+    if (nightsBadge) nightsBadge.textContent = `${nights} Nights`;
+
+    // Selected Suite
+    let selectedSuiteKey = 'marble';
+    let suiteRate = 38000;
+    suiteRadios.forEach(radio => {
+      const parentLabel = radio.closest('.sanctuary-radio-card');
+      if (radio.checked) {
+        selectedSuiteKey = radio.value;
+        suiteRate = parseInt(radio.getAttribute('data-rate'), 10);
+        if (parentLabel) parentLabel.classList.add('active');
+      } else {
+        if (parentLabel) parentLabel.classList.remove('active');
+      }
+    });
+
+    const suiteData = appState.suitesData[selectedSuiteKey];
+    const roomSubtotal = suiteRate * nights;
+
+    // Experiences
+    let expSubtotal = 0;
+    const selectedExps = [];
+    expChecks.forEach(check => {
+      if (check.checked) {
+        const cost = parseInt(check.getAttribute('data-cost'), 10);
+        const name = check.getAttribute('data-name');
+        expSubtotal += cost;
+        selectedExps.push({ name, cost });
+      }
+    });
+
+    const totalINR = roomSubtotal + expSubtotal;
+    const cur = appState.currencyRates[appState.currency];
+
+    // Format & Render
+    if (proposalSuite && suiteData) {
+      proposalSuite.textContent = `${suiteData.name} Journey`;
+    }
+    if (proposalNights) {
+      proposalNights.textContent = `${nights} Nights · 2 Guests · Bespoke Retreat`;
+    }
+
+    if (itemsList) {
+      let html = `
+        <div class="line-item">
+          <span>${nights} Nights: ${suiteData.name}</span>
+          <span>${cur.symbol}${Math.round(roomSubtotal * cur.rate).toLocaleString()}</span>
+        </div>
+      `;
+      selectedExps.forEach(exp => {
+        html += `
+          <div class="line-item">
+            <span>${exp.name}</span>
+            <span>${cur.symbol}${Math.round(exp.cost * cur.rate).toLocaleString()}</span>
+          </div>
+        `;
+      });
+      itemsList.innerHTML = html;
+    }
+
+    if (totalDisplay) {
+      const convertedTotal = Math.round(totalINR * cur.rate);
+      totalDisplay.textContent = `${cur.symbol}${convertedTotal.toLocaleString()}`;
+    }
+
+    // Connect Book button to Enquiry Modal
+    if (bookBtn) {
+      bookBtn.onclick = (e) => {
+        e.preventDefault();
+        const suiteSelect = document.getElementById('suite-select');
+        const specialNotes = document.getElementById('special-notes');
+        const modal = document.getElementById('enquiry-modal');
+
+        if (suiteSelect && suiteData) {
+          for (let i = 0; i < suiteSelect.options.length; i++) {
+            if (suiteSelect.options[i].value === suiteData.name) {
+              suiteSelect.selectedIndex = i;
+              break;
+            }
+          }
+        }
+
+        if (specialNotes) {
+          const expNames = selectedExps.map(e => e.name).join(', ');
+          specialNotes.value = `Custom Itinerary: ${nights} Nights in ${suiteData.name}. Inclusions: ${expNames || 'Standard Stay'}. Estimated budget: ${totalDisplay.textContent}.`;
+        }
+
+        if (modal) {
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+        }
+      };
+    }
+  }
+
+  if (nightsSlider) nightsSlider.addEventListener('input', calculateProposal);
+  suiteRadios.forEach(r => r.addEventListener('change', calculateProposal));
+  expChecks.forEach(c => c.addEventListener('change', calculateProposal));
+
+  // Currency switcher
+  currencyPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      currencyPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      appState.currency = pill.getAttribute('data-currency');
+      calculateProposal();
+      updateSuiteSpecsHUD('tent');
+    });
+  });
+
+  calculateProposal();
+}
+
+// 10. Setup Gallery Lightbox Modal
 function setupGalleryLightbox() {
   const lightbox = document.getElementById('gallery-lightbox');
   const lightboxImg = document.getElementById('lightbox-img');
@@ -171,12 +663,14 @@ function setupGalleryLightbox() {
   };
 
   if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
-  lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) closeLightbox();
-  });
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
 }
 
-// 4. Setup Booking Enquiry Modal & Client-Side Validation
+// 11. Setup Booking Enquiry Modal & Client-Side Validation
 function setupEnquiryModal() {
   const modal = document.getElementById('enquiry-modal');
   const closeBtn = document.getElementById('modal-close');
@@ -216,32 +710,38 @@ function setupEnquiryModal() {
         }
       }
 
-      formView.style.display = 'block';
-      confirmView.classList.remove('active');
-      modal.classList.add('active');
-      modal.setAttribute('aria-hidden', 'false');
+      if (formView) formView.style.display = 'block';
+      if (confirmView) confirmView.classList.remove('active');
+      if (modal) {
+        modal.classList.add('active');
+        modal.setAttribute('aria-hidden', 'false');
+      }
     });
   });
 
   const closeModal = () => {
-    modal.classList.remove('active');
-    modal.setAttribute('aria-hidden', 'true');
+    if (modal) {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
   };
 
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
   if (returnBtn) returnBtn.addEventListener('click', closeModal);
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
 
   if (form) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const name = document.getElementById('guest-name').value.trim();
-      const email = document.getElementById('guest-email').value.trim();
+      const nameInput = document.getElementById('guest-name');
+      const emailInput = document.getElementById('guest-email');
 
-      if (!name || !email) {
+      if (!nameInput || !emailInput || !nameInput.value.trim() || !emailInput.value.trim()) {
         alert('Please provide your name and email address for this demo enquiry.');
         return;
       }
@@ -250,13 +750,13 @@ function setupEnquiryModal() {
         refNumSpan.textContent = Math.floor(1000 + Math.random() * 9000);
       }
 
-      formView.style.display = 'none';
-      confirmView.classList.add('active');
+      if (formView) formView.style.display = 'none';
+      if (confirmView) confirmView.classList.add('active');
     });
   }
 }
 
-// 5. Setup Mobile Drawer Navigation
+// 12. Setup Mobile Drawer Navigation
 function setupMobileNav() {
   const toggleBtn = document.getElementById('mobile-nav-toggle');
   const drawer = document.getElementById('mobile-nav-drawer');
@@ -286,9 +786,15 @@ function setupMobileNav() {
 // Initialize Application on DOM Ready
 document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
+  setupCursorGlow();
   setupScrollParallax();
+  initHero3D();
+  initRoomViewer();
+  setupAudioSoundscape();
+  setupAtmosphereToggle();
+  setupCorridorMap();
+  setupJourneyPlanner();
   setupGalleryLightbox();
   setupEnquiryModal();
   setupMobileNav();
 });
-
