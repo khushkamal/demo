@@ -361,6 +361,22 @@ export class RoomViewer {
     this.buildSuite(preset);
   }
 
+  setLighting(isNight) {
+    if (this.ambientLight && this.sunLight) {
+      if (isNight) {
+        this.ambientLight.intensity = 0.3;
+        this.ambientLight.color.setHex(0xd08a55);
+        this.sunLight.intensity = 0.4;
+        this.sunLight.color.setHex(0xffaa55);
+      } else {
+        this.ambientLight.intensity = 0.9;
+        this.ambientLight.color.setHex(0xfff0dd);
+        this.sunLight.intensity = 1.8;
+        this.sunLight.color.setHex(0xffc58a);
+      }
+    }
+  }
+
   pause() {
     this.isPaused = true;
   }

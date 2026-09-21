@@ -372,6 +372,9 @@ function initRoomViewer() {
     let roomNight = false;
     lightingBtn.addEventListener('click', () => {
       roomNight = !roomNight;
+      if (appState.roomViewer) {
+        appState.roomViewer.setLighting(roomNight);
+      }
       if (lightingBtn) {
         lightingBtn.classList.toggle('active', roomNight);
         lightingBtn.innerHTML = roomNight 
